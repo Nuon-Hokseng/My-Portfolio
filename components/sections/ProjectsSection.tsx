@@ -20,7 +20,7 @@ export default function ProjectsSection() {
   return (
     <section
       ref={ref}
-      className="min-h-screen flex items-center justify-center px-6 py-20"
+      className="h-150 flex items-center justify-center px-6 py-20"
     >
       <div className="max-w-6xl w-full space-y-16">
         <div

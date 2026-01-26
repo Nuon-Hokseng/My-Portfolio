@@ -17,7 +17,7 @@ export default function CertificatesSection() {
   return (
     <section
       ref={ref}
-      className="min-h-screen flex items-center justify-center px-6 py-20 bg-linear-to-b from-background to-card/20"
+      className="h-150 flex items-center justify-center px-6 py-20 bg-linear-to-b from-background to-card/20"
     >
       <div className="max-w-6xl w-full space-y-16">
         <div
@@ -33,7 +33,7 @@ export default function CertificatesSection() {
 
         {certificates.length === 0 ? (
           <div
-            className={`text-center py-16 transform transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+            className={`text-center py-15 transform transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
           >
             <p className="text-xl text-muted-foreground">
               I haven't received any certificates just yet.
