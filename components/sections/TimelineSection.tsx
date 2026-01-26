@@ -22,7 +22,7 @@ const timelineEvents = [
     description: 'Started to realize bacll exists and locked in as hell',
   },
   {
-    year: '2023',
+    year: '2024',
     title: 'Bachelor of SE',
     school: 'Kirirom Institute of Technology',
     description: 'Pursuing a degree in software engineering, focusing on software development and vibe coding.',
