@@ -4,28 +4,28 @@ import { useScrollAnimation } from 'hooks/useScrollAnimation';
 
 const timelineEvents = [
   {
-    year: '2010',
+    year: '2011',
     title: 'Primary School',
-    school: 'ABC Primary School',
-    description: 'Began my educational journey with a passion for learning and discovery.',
+    school: 'Kouk BanhChoin Primary School',
+    description: 'Laid the foundation for lifelong learning and curiosity.',
   },
   {
-    year: '2013',
+    year: '2018',
     title: 'Secondary School',
-    school: 'XYZ Secondary School',
-    description: 'Developed strong fundamentals and began exploring technology.',
+    school: 'Kouk BanhChoin Secondary School',
+    description: 'Know how to talk to woman and skip classes to play games.',
   },
   {
-    year: '2016',
+    year: '2021',
     title: 'High School',
-    school: 'Tech High School',
-    description: 'Started coding and participating in programming competitions.',
+    school: 'Hun Sen Chumpuvorn High School',
+    description: 'Started to realize bacll exists and locked in as hell',
   },
   {
-    year: '2020',
-    title: 'University - Bachelor of Science',
-    school: 'State University',
-    description: 'Graduated with honors in Computer Science. Focused on web development and software engineering.',
+    year: '2023',
+    title: 'Bachelor of SE',
+    school: 'Kirirom Institute of Technology',
+    description: 'Pursuing a degree in software engineering, focusing on software development and vibe coding.',
   },
 ];
 
@@ -63,7 +63,7 @@ export default function TimelineSection() {
                 <div className="flex justify-center lg:w-1/2">
                   <div className="relative z-10">
                     <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center border-4 border-background shadow-lg shadow-accent/50 group hover:scale-110 transition-transform duration-300">
-                      <span className="text-xl font-bold text-accent-foreground">{event.year.slice(-2)}</span>
+                      <span className="text-xl font-bold text-accent-foreground">{event.year}</span>
                     </div>
                   </div>
                 </div>

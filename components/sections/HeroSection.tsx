@@ -1,32 +1,35 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
-import { typewriterWords } from 'lib/animation';
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { typewriterWords } from "lib/animation";
 
 export default function HeroSection() {
-  const [displayText, setDisplayText] = useState('');
+  const [displayText, setDisplayText] = useState("");
   const [wordIndex, setWordIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     const currentWord = typewriterWords[wordIndex];
-    const timer = setTimeout(() => {
-      if (!isDeleting) {
-        if (displayText.length < currentWord.length) {
-          setDisplayText(currentWord.slice(0, displayText.length + 1));
+    const timer = setTimeout(
+      () => {
+        if (!isDeleting) {
+          if (displayText.length < currentWord.length) {
+            setDisplayText(currentWord.slice(0, displayText.length + 1));
+          } else {
+            setTimeout(() => setIsDeleting(true), 1000);
+          }
         } else {
-          setTimeout(() => setIsDeleting(true), 1000);
+          if (displayText.length > 0) {
+            setDisplayText(displayText.slice(0, -1));
+          } else {
+            setIsDeleting(false);
+            setWordIndex((prev) => (prev + 1) % typewriterWords.length);
+          }
         }
-      } else {
-        if (displayText.length > 0) {
-          setDisplayText(displayText.slice(0, -1));
-        } else {
-          setIsDeleting(false);
-          setWordIndex((prev) => (prev + 1) % typewriterWords.length);
-        }
-      }
-    }, isDeleting ? 50 : 100);
+      },
+      isDeleting ? 50 : 100,
+    );
 
     return () => clearTimeout(timer);
   }, [displayText, wordIndex, isDeleting]);
@@ -43,8 +46,7 @@ export default function HeroSection() {
         <div className="space-y-8 animate-fade-in">
           <div>
             <h1 className="text-5xl lg:text-7xl font-bold mb-4 text-balance">
-              Hi, I'm{' '}
-              <span className="text-accent">Your Name</span>
+              Hi, I'm <span className="text-accent">Nuon Hokseng</span>
             </h1>
             <div className="text-2xl lg:text-3xl font-semibold text-muted-foreground h-16 flex items-center">
               <span className="border-r-4 border-accent pr-3">
@@ -54,14 +56,15 @@ export default function HeroSection() {
           </div>
 
           <p className="text-lg text-muted-foreground max-w-lg leading-relaxed">
-            A passionate software engineer crafting beautiful, scalable web applications. 
-            I specialize in modern JavaScript/TypeScript ecosystems and love solving complex problems.
+            A passionate software engineer crafting beautiful, scalable web
+            applications. I specialize in modern JavaScript/TypeScript
+            ecosystems and love solving complex problems.
           </p>
 
           <div className="flex gap-4 pt-4">
-            <button className="px-8 py-3 bg-accent text-accent-foreground rounded-lg font-semibold hover:opacity-90 transition-opacity transform hover:scale-105 duration-300">
+            <a href="https://github.com/Nuon-Hokseng?tab=repositories" className="px-8 py-3 bg-accent text-accent-foreground rounded-lg font-semibold hover:opacity-90 transition-opacity transform hover:scale-105 duration-300">
               View My Work
-            </button>
+            </a>
             <button className="px-8 py-3 border border-muted-foreground text-foreground rounded-lg font-semibold hover:border-accent hover:text-accent transition-colors transform hover:scale-105 duration-300">
               Contact Me
             </button>
@@ -69,26 +72,53 @@ export default function HeroSection() {
 
           {/* Social Links */}
           <div className="flex gap-4 pt-4">
-            <a href="#" className="text-muted-foreground hover:text-accent transition-colors">GitHub</a>
-            <a href="#" className="text-muted-foreground hover:text-accent transition-colors">LinkedIn</a>
-            <a href="#" className="text-muted-foreground hover:text-accent transition-colors">Twitter</a>
+            <a
+              href="https://github.com/Nuon-Hokseng"
+              className="text-muted-foreground hover:text-accent transition-colors"
+            >
+              GitHub
+            </a>
+            <a
+              href="https://www.linkedin.com/in/nuon-hokseng-b5b65b33b/"
+              className="text-muted-foreground hover:text-accent transition-colors"
+            >
+              LinkedIn
+            </a>
+            <a
+              href="https://web.facebook.com/Seng.kisuke/"
+              className="text-muted-foreground hover:text-accent transition-colors"
+            >
+              Facebook
+            </a>
+             <a
+              href="https://t.me/sengkennedy"
+              className="text-muted-foreground hover:text-accent transition-colors"
+            >
+              Telegram
+            </a>
           </div>
         </div>
 
         {/* Right side - Image */}
-        <div className="flex justify-center items-center">
-          <div className="relative w-80 h-80 lg:w-96 lg:h-96">
+        <div className="flex justify-center items-center overflow-visible">
+          <div className="relative w-80 h-80 lg:w-96 lg:h-96 overflow-visible">
             {/* Animated background circles */}
             <div className="absolute inset-0 rounded-full bg-linear-to-br from-accent to-transparent opacity-20 blur-3xl animate-pulse" />
-            <div className="absolute inset-0 rounded-full border-2 border-accent opacity-20 animate-spin-slow" style={{ animationDuration: '8s' }} />
-            
-            <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-accent shadow-lg shadow-accent/20 transform hover:scale-105 transition-transform duration-300">
+            <div
+              className="absolute inset-0 rounded-full border-2 border-accent opacity-20 animate-spin-slow"
+              style={{ animationDuration: "8s" }}
+            />
+
+            <div className="absolute -inset-0.5 rounded-full overflow-visible border-2 border-accent shadow-lg shadow-accent/20 transform hover:scale-105 transition-transform duration-300 z-10">
               <Image
-                src="/profile.jpg"
+                src="/hero.png"
                 alt="Profile"
                 fill
-                className="object-cover"
+                className="object-cover rounded-full"
                 priority
+                quality={100}
+                sizes="(max-width: 1024px) 320px, 384px"
+                style={{ imageRendering: "crisp-edges" }}
               />
             </div>
           </div>

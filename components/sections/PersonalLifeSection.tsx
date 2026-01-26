@@ -27,33 +27,42 @@ export default function PersonalLifeSection() {
   });
 
   const photos = [
-    { src: "/couple.jpg", caption: "Together Forever" },
-    { src: "/couple.jpg", caption: "Our Journey" },
-    { src: "/couple.jpg", caption: "Making Memories" },
+    { src: "/couple1.jpg" },
+    { src: "/couple2.jpg" },
+    { src: "/couple3.jpg" },
+    { src: "/couple4.jpg" },
+    { src: "/couple5.jpg" },
   ];
 
   const calculateTimeElapsed = () => {
-    const anniversaryDate = new Date(2025, 1, 17); // February 17, 2025
+    const firstAnniversary = new Date(2025, 1, 17); // February 17, 2025
     const now = new Date();
 
-    let years = now.getFullYear() - anniversaryDate.getFullYear();
-    let months = now.getMonth() - anniversaryDate.getMonth();
-    let days = now.getDate() - anniversaryDate.getDate();
-
-    if (days < 0) {
+    // Track total time together (years/months) since first anniversary
+    let years = now.getFullYear() - firstAnniversary.getFullYear();
+    let months = now.getMonth() - firstAnniversary.getMonth();
+    if (now.getDate() < firstAnniversary.getDate()) {
       months--;
-      const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-      days += prevMonth.getDate();
     }
-
     if (months < 0) {
       years--;
       months += 12;
     }
 
-    const hours = now.getHours();
-    const minutes = now.getMinutes();
-    const seconds = now.getSeconds();
+    // Countdown to the next anniversary (February 17 every year)
+    const currentYearAnniversary = new Date(now.getFullYear(), 1, 17);
+    const nextAnniversary =
+      now > currentYearAnniversary
+        ? new Date(now.getFullYear() + 1, 1, 17)
+        : currentYearAnniversary;
+
+    const diffMs = nextAnniversary.getTime() - now.getTime();
+    const totalSeconds = Math.max(0, Math.floor(diffMs / 1000));
+
+    const days = Math.floor(totalSeconds / 86_400);
+    const hours = Math.floor((totalSeconds % 86_400) / 3_600);
+    const minutes = Math.floor((totalSeconds % 3_600) / 60);
+    const seconds = totalSeconds % 60;
 
     return { years, months, days, hours, minutes, seconds };
   };
@@ -120,21 +129,16 @@ export default function PersonalLifeSection() {
             <div className="space-y-4">
               <h4 className="text-xl font-semibold">Interests & Hobbies</h4>
               <div className="grid grid-cols-2 gap-3">
-                {[
-                  "🏃‍♂️ Running",
-                  "📚 Reading",
-                  "✈️ Traveling",
-                  "🎮 Gaming",
-                  "📸 Photography",
-                  "🎬 Movies",
-                ].map((hobby) => (
-                  <div
-                    key={hobby}
-                    className="p-3 bg-muted/50 border border-muted rounded-lg hover:border-accent hover:bg-accent/10 transition-all duration-300 text-foreground"
-                  >
-                    {hobby}
-                  </div>
-                ))}
+                {["🏃‍♂️ Running", "🎮 Gaming", "😴 Sleeping", "🎬 Movies"].map(
+                  (hobby) => (
+                    <div
+                      key={hobby}
+                      className="p-3 bg-muted/50 border border-muted rounded-lg hover:border-accent hover:bg-accent/10 transition-all duration-300 text-foreground"
+                    >
+                      {hobby}
+                    </div>
+                  ),
+                )}
               </div>
             </div>
           </div>
@@ -143,7 +147,7 @@ export default function PersonalLifeSection() {
           <div
             className={`space-y-6 transform transition-all duration-700 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}
           >
-            <div className="group relative h-96 rounded-xl overflow-hidden border-2 border-accent shadow-lg shadow-accent/20 hover:shadow-accent/40 transition-shadow duration-300">
+            <div className="group relative xl:h-130 md:h-200 h-120 rounded-xl overflow-hidden border-2 border-accent shadow-lg shadow-accent/20 hover:shadow-accent/40 transition-shadow duration-300">
               {/* Carousel images with fade transition */}
               {photos.map((photo, index) => (
                 <div
@@ -154,20 +158,13 @@ export default function PersonalLifeSection() {
                 >
                   <Image
                     src={photo.src || "/placeholder.svg"}
-                    alt={photo.caption}
+                    alt={"photo"}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                 </div>
               ))}
-
-              {/* Overlay on hover */}
-              <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                <p className="text-white text-lg font-semibold">
-                  {photos[currentPhotoIndex].caption}
-                </p>
-              </div>
-
+              <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6"></div>
               {/* Navigation arrows */}
               <button
                 onClick={handlePrevPhoto}
@@ -183,7 +180,6 @@ export default function PersonalLifeSection() {
               >
                 <ChevronRight size={24} />
               </button>
-
               {/* Dot indicators */}
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-2">
                 {photos.map((_, index) => (
@@ -261,7 +257,7 @@ export default function PersonalLifeSection() {
                 </p>
               </div> */}
               <p className="text-sm text-muted-foreground pt-2">
-                Since February 17, 2025
+                Until next February 17
               </p>
             </div>
           </div>
@@ -274,12 +270,19 @@ export default function PersonalLifeSection() {
         >
           <p className="text-lg text-muted-foreground">Let's stay connected</p>
           <div className="flex flex-wrap justify-center gap-4">
-            <button className="px-8 py-3 bg-accent text-accent-foreground rounded-lg font-semibold hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-accent/30">
+            <a
+              href="https://t.me/sengkennedy"
+              className="px-8 py-3 bg-accent text-accent-foreground rounded-lg font-semibold hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-accent/30"
+            >
               Contact Me
-            </button>
-            <button className="px-8 py-3 border border-muted-foreground text-foreground rounded-lg font-semibold hover:border-accent hover:text-accent transition-all duration-300 transform hover:scale-105">
+            </a>
+            <a
+              href="/Nuon_HokSeng_CV.pdf"
+              download="Nuon_HokSeng_CV.pdf"
+              className="px-8 py-3 border border-muted-foreground text-foreground rounded-lg font-semibold hover:border-accent hover:text-accent transition-all duration-300 transform hover:scale-105"
+            >
               Download CV
-            </button>
+            </a>
           </div>
         </div>
       </div>
