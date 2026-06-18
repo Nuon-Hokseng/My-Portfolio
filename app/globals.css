@@ -119,8 +119,15 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-background text-foreground;
+  }
+  /* offset anchor targets so the sticky navbar doesn't cover headings */
+  section[id] {
+    scroll-margin-top: 5rem;
   }
 }
 
@@ -256,5 +263,41 @@
   .animate-gradient-shift {
     animation: gradientShift 3s ease infinite;
     background-size: 200% 200%;
+  }
+
+  @keyframes konamiFall {
+    to {
+      transform: translateY(110vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes pulseDot {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.4;
+      transform: scale(0.8);
+    }
+  }
+
+  .animate-pulse-dot {
+    animation: pulseDot 1.6s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }

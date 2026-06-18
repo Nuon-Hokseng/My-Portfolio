@@ -2,97 +2,90 @@
 
 import { useScrollAnimation } from "hooks/useScrollAnimation";
 
-const skills = [
-  { name: "JavaScript", src: "/skills/js.png", size: "w-20 h-20", border: "" },
-  { name: "TypeScript", src: "/skills/ts.png", size: "w-20 h-20", border: "" },
-  { name: "HTML/CSS", src: "/skills/trio.png", size: "w-20 h-20", border: "" },
+type Skill = { name: string; src: string; size: string; border: string };
+
+const groups: { title: string; skills: Skill[] }[] = [
   {
-    name: "PostgreSQL",
-    src: "/skills/postgre.png",
-    size: "w-30 h-20",
-    border: "",
+    title: "Languages & Frontend",
+    skills: [
+      { name: "JavaScript", src: "/skills/js.png", size: "w-16 h-16", border: "" },
+      { name: "TypeScript", src: "/skills/ts.png", size: "w-16 h-16", border: "" },
+      { name: "HTML / CSS", src: "/skills/trio.png", size: "w-16 h-16", border: "" },
+      { name: "Next.js", src: "/skills/nexts.png", size: "w-16 h-16", border: "border border-white rounded-full p-1 bg-white" },
+    ],
   },
   {
-    name: "MongoDB",
-    src: "/skills/mongodb.png",
-    size: "w-20 h-20",
-    border: "",
+    title: "Backend & Databases",
+    skills: [
+      { name: "PostgreSQL", src: "/skills/postgre.png", size: "w-24 h-16", border: "" },
+      { name: "MongoDB", src: "/skills/mongodb.png", size: "w-16 h-16", border: "" },
+      { name: "Supabase", src: "/skills/supabase.png", size: "w-16 h-16", border: "" },
+    ],
   },
   {
-    name: "Next.js",
-    src: "/skills/nexts.png",
-    size: "w-20 h-20",
-    border: "border-1 border-white rounded-full p-1 bg-white",
-  },
-  {
-    name: "Supabase",
-    src: "/skills/supabase.png",
-    size: "w-20 h-20",
-    border: "",
-  },
-  {
-    name: "PlasmoDB",
-    src: "/skills/plasmo.png",
-    size: "w-20 h-20",
-    border: "border-1 border-white rounded-full p-1 bg-white",
-  },
-  {
-    name: "Linux",
-    src: "/skills/linux.png",
-    size: "w-20 h-20",
-    border: "border-1 border-white rounded-full p-1 bg-white",
+    title: "Tools & Platform",
+    skills: [
+      { name: "Linux", src: "/skills/linux.png", size: "w-16 h-16", border: "border border-white rounded-full p-1 bg-white" },
+      { name: "Plasmo", src: "/skills/plasmo.png", size: "w-16 h-16", border: "border border-white rounded-full p-1 bg-white" },
+    ],
   },
 ];
 
 export default function SkillsSection() {
-  const { ref, isVisible } = useScrollAnimation({ threshold: 0.2 });
+  const { ref, isVisible } = useScrollAnimation({ threshold: 0.15 });
 
   return (
     <section
+      id="skills"
       ref={ref}
-      className=" min-h-screen flex items-center justify-center px-6 py-20 bg-linear-to-b from-background to-card/20"
+      className="min-h-screen flex items-center justify-center px-6 py-20 bg-linear-to-b from-background to-card/20"
     >
       <div className="max-w-6xl w-full">
         <div
-          className={`space-y-16 transform transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          className={`space-y-14 transform transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
         >
           <div className="text-center space-y-4">
             <h2 className="text-5xl lg:text-6xl font-bold text-balance">
               Skills & <span className="text-accent">Technologies</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Tools and technologies I've mastered throughout my development
-              journey
+              The stack I reach for to design, build, and ship products
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
-            {skills.map((skill, index) => (
-              <div
-                key={skill.name}
-                className={`group p-6 bg-card border border-muted rounded-xl hover:border-accent hover:bg-card/80 transition-all duration-500 transform hover:scale-110 hover:shadow-lg hover:shadow-accent/20 cursor-pointer ${
-                  isVisible
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-                style={{
-                  transitionDelay: isVisible ? `${index * 50}ms` : "0ms",
-                }}
-              >
-                <img
-                  src={skill.src}
-                  alt={skill.name}
-                  className={`${skill.size} ${skill.border} mb-3 group-hover:scale-125 transition-transform duration-300 object-contain`}
-                />
-                <h3 className="text-lg font-semibold text-foreground group-hover:text-accent transition-colors">
-                  {skill.name}
-                </h3>
+          <div className="space-y-12">
+            {groups.map((group, gi) => (
+              <div key={group.title} className="space-y-6">
+                <div className="flex items-center gap-4">
+                  <h3 className="text-sm font-bold uppercase tracking-widest text-accent whitespace-nowrap">
+                    {group.title}
+                  </h3>
+                  <div className="h-px flex-1 bg-linear-to-r from-accent/40 to-transparent" />
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+                  {group.skills.map((skill, index) => (
+                    <div
+                      key={skill.name}
+                      className={`group flex items-center gap-4 p-5 bg-card border border-muted rounded-xl hover:border-accent hover:bg-card/80 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-accent/10 cursor-default ${
+                        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                      }`}
+                      style={{ transitionDelay: isVisible ? `${gi * 100 + index * 50}ms` : "0ms" }}
+                    >
+                      <img
+                        src={skill.src}
+                        alt={skill.name}
+                        className={`${skill.size} ${skill.border} shrink-0 object-contain group-hover:scale-110 transition-transform duration-300`}
+                      />
+                      <h4 className="text-base font-semibold text-foreground group-hover:text-accent transition-colors">
+                        {skill.name}
+                      </h4>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
-
-          {/* Decorative line */}
-          <div className="h-1 bg-linear-to-r from-transparent via-accent to-transparent opacity-30" />
         </div>
       </div>
     </section>

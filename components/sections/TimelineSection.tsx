@@ -13,20 +13,22 @@ const timelineEvents = [
     year: "2018",
     title: "Secondary School",
     school: "Kouk BanhChoin Secondary School",
-    description: "Know how to talk to woman and skip classes to play games.",
+    description:
+      "Discovered a love for problem-solving and built the discipline that carried into my studies.",
   },
   {
     year: "2021",
     title: "High School",
     school: "Hun Sen Chumpuvorn High School",
-    description: "Started to realize bacll exists and locked in as hell",
+    description:
+      "Focused on math and science, and wrote my first lines of code — the spark that set my direction.",
   },
   {
     year: "2024",
-    title: "Bachelor of SE",
+    title: "Bachelor of Software Engineering",
     school: "Kirirom Institute of Technology",
     description:
-      "Pursuing a degree in software engineering, focusing on software development and vibe coding.",
+      "Studying software engineering with a focus on full-stack web development, databases, and building real-world projects.",
   },
 ];
 
@@ -35,6 +37,7 @@ export default function TimelineSection() {
 
   return (
     <section
+      id="journey"
       ref={ref}
       className="min-h-screen flex items-center justify-center px-6 py-20"
     >

@@ -35,7 +35,7 @@ export default function HeroSection() {
   }, [displayText, wordIndex, isDeleting]);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-6 py-20 overflow-hidden">
+    <section id="hero" className="relative min-h-screen flex items-center justify-center px-6 py-20 overflow-hidden">
       {/* Animated background grid */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0 bg-linear-to-b from-accent to-transparent" />
@@ -44,9 +44,21 @@ export default function HeroSection() {
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto w-full">
         {/* Left side - Text */}
         <div className="space-y-8 animate-fade-in">
+          {/* Availability badge */}
+          <div className="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/10 px-4 py-1.5 text-sm font-medium text-accent">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-green-500 animate-pulse-dot" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+            </span>
+            Open to new opportunities
+          </div>
+
           <div>
             <h1 className="text-5xl lg:text-7xl font-bold mb-4 text-balance">
-              Hi, I'm <span className="text-accent">Nuon Hokseng</span>
+              Hi, I'm{" "}
+              <span className="bg-linear-to-r from-accent via-fuchsia-500 to-accent bg-clip-text text-transparent">
+                Nuon Hokseng
+              </span>
             </h1>
             <div className="text-2xl lg:text-3xl font-semibold text-muted-foreground h-16 flex items-center">
               <span className="border-r-4 border-accent pr-3">
@@ -61,17 +73,23 @@ export default function HeroSection() {
             ecosystems and love solving complex problems.
           </p>
 
-          <div className="flex gap-4 pt-4">
-            <a href="https://github.com/Nuon-Hokseng?tab=repositories" className="px-8 py-3 bg-accent text-accent-foreground rounded-lg font-semibold hover:opacity-90 transition-opacity transform hover:scale-105 duration-300">
+          <div className="flex flex-wrap gap-4 pt-4">
+            <a href="#projects" className="px-8 py-3 bg-accent text-accent-foreground rounded-lg font-semibold hover:opacity-90 transition-opacity transform hover:scale-105 duration-300">
               View My Work
             </a>
-            <button className="px-8 py-3 border border-muted-foreground text-foreground rounded-lg font-semibold hover:border-accent hover:text-accent transition-colors transform hover:scale-105 duration-300">
+            <a href="#contact" className="px-8 py-3 border border-muted-foreground text-foreground rounded-lg font-semibold hover:border-accent hover:text-accent transition-colors transform hover:scale-105 duration-300">
               Contact Me
-            </button>
+            </a>
           </div>
 
           {/* Social Links */}
-          <div className="flex gap-4 pt-4">
+          <div className="flex flex-wrap gap-4 pt-4">
+            <a
+              href="mailto:sengnoname168@gmail.com"
+              className="text-muted-foreground hover:text-accent transition-colors"
+            >
+              Email
+            </a>
             <a
               href="https://github.com/Nuon-Hokseng"
               className="text-muted-foreground hover:text-accent transition-colors"

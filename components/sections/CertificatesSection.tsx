@@ -16,6 +16,7 @@ export default function CertificatesSection() {
 
   return (
     <section
+      id="certificates"
       ref={ref}
       className="h-150 flex items-center justify-center px-6 py-20 bg-linear-to-b from-background to-card/20"
     >
@@ -33,11 +34,32 @@ export default function CertificatesSection() {
 
         {certificates.length === 0 ? (
           <div
-            className={`text-center py-15 transform transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+            className={`max-w-2xl mx-auto text-center transform transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
           >
-            <p className="text-xl text-muted-foreground">
-              I haven't received any certificates just yet.
-            </p>
+            <div className="rounded-2xl border border-muted bg-card/60 p-10 space-y-5">
+              <div className="text-5xl">🚀</div>
+              <p className="text-xl font-semibold text-foreground">
+                I learn by building.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                No framed certificates yet — every project above is hands-on
+                proof of what I can ship. Right now I'm deepening my skills in
+                cloud deployment, system design, and scalable backends, with
+                certifications on the way.
+              </p>
+              <div className="flex flex-wrap justify-center gap-2 pt-2">
+                {["Cloud & Deployment", "System Design", "Scalable Backends"].map(
+                  (item) => (
+                    <span
+                      key={item}
+                      className="px-4 py-1.5 text-sm font-medium rounded-full border border-accent/30 bg-accent/10 text-accent"
+                    >
+                      {item}
+                    </span>
+                  ),
+                )}
+              </div>
+            </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

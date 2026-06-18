@@ -92,6 +92,7 @@ export default function PersonalLifeSection() {
 
   return (
     <section
+      id="contact"
       ref={ref}
       className="min-h-screen flex items-center justify-center px-6 py-20 bg-linear-to-b from-background to-card/20"
     >
