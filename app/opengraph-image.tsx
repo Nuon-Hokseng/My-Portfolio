@@ -57,7 +57,7 @@ export default function OpengraphImage() {
         </div>
 
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 26, color: "#9b95c2" }}>
-          <span>nuonhokseng.vercel.app</span>
+          <span>nuonhokseng.sparkbytekh.com</span>
           <span style={{ fontWeight: 700, color: "#8b7dff" }}>NH.</span>
         </div>
       </div>

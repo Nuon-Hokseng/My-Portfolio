@@ -1,5 +1,5 @@
 // Single source for identity details used by the page, metadata and JSON-LD.
-export const siteUrl = "https://nuonhokseng.vercel.app";
+export const siteUrl = "https://nuonhokseng.sparkbytekh.com";
 
 export const name = "Nuon Hokseng";
 export const khmerName = "នួន ហុកសេង";
