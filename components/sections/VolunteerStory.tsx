@@ -349,9 +349,9 @@ export default function VolunteerStory({
         ))}
       </div>
 
-      <div className="grid gap-10 lg:grid-cols-[7fr_5fr] lg:gap-12">
-        {/* keyed so each project starts on its first photo */}
-        <Carousel key={project.id} slides={project.slides} label={project.title} />
+      {/* keyed so each project starts on its first photo and fades in */}
+      <div key={project.id} className="gal-enter grid gap-10 lg:grid-cols-[7fr_5fr] lg:gap-12">
+        <Carousel slides={project.slides} label={project.title} />
 
         <div className="relative flex flex-col gap-6">
           <Kaboom text="WOW!" rotate={9} className="-top-3 right-0 max-lg:hidden" />

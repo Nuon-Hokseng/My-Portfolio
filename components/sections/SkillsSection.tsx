@@ -82,6 +82,8 @@ export default function SkillsSection() {
                       <img
                         src={skill.src}
                         alt={skill.name}
+                        loading="lazy"
+                        decoding="async"
                         className={`${skill.size} ${skill.border} shrink-0 object-contain group-hover:scale-110 transition-transform duration-300`}
                       />
                       <h4 className="text-base font-semibold text-foreground group-hover:text-accent transition-colors">

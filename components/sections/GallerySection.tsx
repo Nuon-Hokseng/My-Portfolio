@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type CSSProperties } from "react";
+import { useRef, useState, type CSSProperties } from "react";
 import Image from "next/image";
 import { Kaboom } from "@/components/comic/Kaboom";
 import { ProjectModal } from "@/components/ProjectModal";
@@ -220,6 +220,7 @@ export default function GallerySection() {
   const [filter, setFilter] = useState<Filter>("all");
   const [story, setStory] = useState<StoryId>("saladong");
   const [selected, setSelected] = useState<Project | null>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
 
   // the Private filter re-flows: the POS tile gets a wider slot so the NDA tile fits beside it
   const tiles =
@@ -239,13 +240,16 @@ export default function GallerySection() {
     } else {
       setStory(item.story ?? "saladong");
       setFilter("volunteer");
+      // the story is shorter and taller than the tile grid, so glide up to the filter bar
+      // instead of leaving the reader mid-page while the content swaps under them
+      requestAnimationFrame(() => headerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
     }
   };
 
   return (
     <section id="gallery" className="relative overflow-hidden border-t border-ink px-5 py-16 md:px-10 lg:py-28">
       <div className="relative z-10 mx-auto w-full max-w-300">
-        <div className="mb-10 grid items-end gap-4 lg:grid-cols-[auto_1fr_auto] lg:gap-9">
+        <div ref={headerRef} className="mb-10 grid scroll-mt-24 items-end gap-4 lg:grid-cols-[auto_1fr_auto] lg:gap-9">
           <h2 className="comic-caption">Portfolio wall</h2>
           <p className="max-w-[34ch] text-muted-foreground lg:text-[17px]">
             Every project, the volunteering and the moments in between, all on one page.
@@ -265,10 +269,13 @@ export default function GallerySection() {
           </div>
         </div>
 
+        {/* keyed by filter so every tab change fades the new content in */}
         {showStory ? (
-          <VolunteerStory project={story} onProject={setStory} />
+          <div key="story" className="gal-enter">
+            <VolunteerStory project={story} onProject={setStory} />
+          </div>
         ) : (
-          <div className="grid auto-rows-[92px] grid-cols-2 gap-2.5 grid-flow-dense lg:auto-rows-[118px] lg:grid-cols-12 lg:gap-3.5">
+          <div key={filter} className="gal-enter grid auto-rows-[92px] grid-cols-2 gap-2.5 grid-flow-dense lg:auto-rows-[118px] lg:grid-cols-12 lg:gap-3.5">
             {tiles.map(({ item, span }) => (
               <Tile key={item.caption} item={item} span={span} onOpen={() => open(item)} />
             ))}
