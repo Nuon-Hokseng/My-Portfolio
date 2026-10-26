@@ -453,16 +453,17 @@ export default function GameSection() {
           )}
 
           {status === "idle" && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-black/55 backdrop-blur-sm text-center px-6">
-              <div className="text-6xl">🎮</div>
-              <h3 className="text-2xl font-bold text-white">Ready, Player One?</h3>
-              <p className="text-white/70 max-w-md">
+            // the frame is only ~180px tall on phones, so extras hide below sm
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 sm:gap-5 bg-black/55 backdrop-blur-sm text-center px-6">
+              <div className="hidden sm:block text-6xl">🎮</div>
+              <h3 className="text-lg sm:text-2xl font-bold text-white">Ready, Player One?</h3>
+              <p className="hidden sm:block text-white/70 max-w-md">
                 3 scrolling levels of jump-and-run. Stomp the enemies and try to
                 grab every coin.
               </p>
               <button
                 onClick={start}
-                className="px-8 py-3 rounded-xl bg-accent text-accent-foreground font-bold text-lg hover:opacity-90 transition-opacity"
+                className="px-6 py-2 text-base sm:px-8 sm:py-3 sm:text-lg rounded-xl bg-accent text-accent-foreground font-bold hover:opacity-90 transition-opacity"
               >
                 ▶ Start Game
               </button>
@@ -470,23 +471,23 @@ export default function GameSection() {
           )}
 
           {status === "won" && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-black/65 backdrop-blur-sm text-center px-6">
-              <div className="text-6xl">🏆</div>
-              <h3 className="text-3xl font-bold text-white">You beat all 3 levels!</h3>
-              <p className="text-white/80">
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 sm:gap-4 bg-black/65 backdrop-blur-sm text-center px-6">
+              <div className="hidden sm:block text-6xl">🏆</div>
+              <h3 className="text-xl sm:text-3xl font-bold text-white">You beat all 3 levels!</h3>
+              <p className="text-sm sm:text-base text-white/80">
                 {coins} coins collected · {deaths} death{deaths === 1 ? "" : "s"}.
                 Legend. 🫡
               </p>
-              <div className="flex flex-wrap justify-center gap-3 pt-2">
+              <div className="flex flex-wrap justify-center gap-2 sm:gap-3 sm:pt-2">
                 <button
                   onClick={start}
-                  className="px-6 py-3 rounded-xl bg-accent text-accent-foreground font-bold hover:opacity-90 transition-opacity"
+                  className="px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-base rounded-xl bg-accent text-accent-foreground font-bold hover:opacity-90 transition-opacity"
                 >
                   Play again 🔁
                 </button>
                 <a
                   href="#contact"
-                  className="px-6 py-3 rounded-xl border border-white/40 text-white font-semibold hover:bg-white/10 transition-colors"
+                  className="px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-base rounded-xl border border-white/40 text-white font-semibold hover:bg-white/10 transition-colors"
                 >
                   Let's connect →
                 </a>

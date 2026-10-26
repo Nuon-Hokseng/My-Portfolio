@@ -1,14 +1,48 @@
 "use client";
 
 import { useScrollAnimation } from "hooks/useScrollAnimation";
+import { PhotoViewer, type Photo } from "@/components/PhotoViewer";
 
-const certificates: any[] = [
-  // {
-  //   title: 'AWS Certified Solutions Architect',
-  //   issuer: 'Amazon Web Services',
-  //   date: '2023',
-  //   badge: '☁️',
-  // }
+type Achievement = {
+  title: string;
+  place: string;
+  where: string;
+  when: string;
+  description: string;
+  facts: string[];
+  photos: Photo[];
+};
+
+const achievements: Achievement[] = [
+  {
+    title: "Debate Competition Champion",
+    place: "1st place",
+    where: "American Bridge International School",
+    when: "2019 – 2020",
+    description:
+      "Took first place at the school's debate championship, competing across its 20 branches. The final round was held on stage at the 2nd Annual Debate Championships, where our team went home with the medals, the trophy and the certificates.",
+    facts: ["20 branches competed", "Final round on stage", "Team of debaters"],
+    photos: [
+      {
+        src: "/debate1.jpg",
+        alt: "The winning team holding medals, a trophy and a framed certificate with their coaches",
+        caption: "First-place medals, trophy and certificate",
+        focus: "50% 40%",
+      },
+      {
+        src: "/debate3.jpg",
+        alt: "Debaters holding framed certificates on stage in front of the championship banner",
+        caption: "On stage at the final round with our certificates",
+        focus: "50% 55%",
+      },
+      {
+        src: "/debate2.jpg",
+        alt: "Three debaters on the government side seated behind name cards during a round",
+        caption: "On the government side during a round",
+        focus: "50% 70%",
+      },
+    ],
+  },
 ];
 
 export default function CertificatesSection() {
@@ -18,7 +52,7 @@ export default function CertificatesSection() {
     <section
       id="certificates"
       ref={ref}
-      className="h-150 flex items-center justify-center px-6 py-20 bg-linear-to-b from-background to-card/20"
+      className="flex items-center justify-center px-6 py-20 bg-linear-to-b from-background to-card/20"
     >
       <div className="max-w-6xl w-full space-y-16">
         <div
@@ -28,93 +62,50 @@ export default function CertificatesSection() {
             Certifications & <span className="text-accent">Achievements</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Professional certifications validating my expertise
+            Recognition earned along the way
           </p>
         </div>
 
-        {certificates.length === 0 ? (
-          <div
-            className={`max-w-2xl mx-auto text-center transform transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-          >
-            <div className="rounded-2xl border border-muted bg-card/60 p-10 space-y-5">
-              <div className="text-5xl">🚀</div>
-              <p className="text-xl font-semibold text-foreground">
-                I learn by building.
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                No framed certificates yet — every project above is hands-on
-                proof of what I can ship. Right now I'm deepening my skills in
-                cloud deployment, system design, and scalable backends, with
-                certifications on the way.
-              </p>
-              <div className="flex flex-wrap justify-center gap-2 pt-2">
-                {["Cloud & Deployment", "System Design", "Scalable Backends"].map(
-                  (item) => (
-                    <span
-                      key={item}
-                      className="px-4 py-1.5 text-sm font-medium rounded-full border border-accent/30 bg-accent/10 text-accent"
-                    >
-                      {item}
-                    </span>
-                  ),
-                )}
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {certificates.map((cert, index) => (
-              <div
-                key={cert.title}
-                className={`group relative overflow-hidden rounded-xl border border-muted hover:border-accent bg-card hover:bg-card/80 p-8 transition-all duration-500 transform hover:scale-105 hover:shadow-lg hover:shadow-accent/20 cursor-pointer ${
-                  isVisible
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-                style={{
-                  transitionDelay: isVisible ? `${index * 50}ms` : "0ms",
-                }}
-              >
-                {/* Animated background */}
-                <div className="absolute inset-0 bg-linear-to-br from-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="space-y-8">
+          {achievements.map((a, index) => (
+            <article
+              key={a.title}
+              className={`grid gap-8 rounded-xl border border-muted bg-card p-6 transition-all duration-700 hover:border-accent lg:grid-cols-[7fr_5fr] lg:gap-10 lg:p-8 ${
+                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
+              style={{ transitionDelay: isVisible ? `${index * 100}ms` : "0ms" }}
+            >
+              <PhotoViewer photos={a.photos} />
 
-                <div className="relative z-10 space-y-4">
-                  <div className="text-5xl group-hover:scale-125 transition-transform duration-300">
-                    {cert.badge}
-                  </div>
-
-                  <div>
-                    <h3 className="text-xl font-bold text-foreground group-hover:text-accent transition-colors mb-2">
-                      {cert.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {cert.issuer}
-                    </p>
-                  </div>
-
-                  <div className="pt-4 border-t border-muted/50 flex items-center justify-between">
-                    <span className="text-sm font-semibold text-accent">
-                      {cert.date}
-                    </span>
-                    <div className="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center group-hover:bg-accent group-hover:scale-110 transition-all duration-300">
-                      <svg
-                        className="w-4 h-4 text-accent group-hover:text-accent-foreground transition-colors"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 10l-4.293-4.293a1 1 0 010-1.414z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </div>
-                  </div>
+              <div className="flex flex-col gap-5">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="rounded-full bg-accent px-3 py-1 text-sm font-bold text-accent-foreground">
+                    {a.place}
+                  </span>
+                  <span className="text-sm font-semibold text-accent">{a.when}</span>
                 </div>
+
+                <div>
+                  <h3 className="text-2xl font-bold text-foreground lg:text-3xl">{a.title}</h3>
+                  <p className="mt-1 font-semibold text-muted-foreground">{a.where}</p>
+                </div>
+
+                <p className="leading-relaxed text-foreground">{a.description}</p>
+
+                <ul className="flex flex-wrap gap-2">
+                  {a.facts.map((fact) => (
+                    <li
+                      key={fact}
+                      className="rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-sm font-medium text-accent"
+                    >
+                      {fact}
+                    </li>
+                  ))}
+                </ul>
               </div>
-            ))}
-          </div>
-        )}
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );

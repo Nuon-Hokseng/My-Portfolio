@@ -29,7 +29,7 @@ export default function AboutSection() {
 
         <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed text-center max-w-3xl mx-auto">
           I'm a software engineering student from Cambodia who learns by{" "}
-          <span className="text-foreground font-medium">building real things</span>
+          <span className="text-foreground font-medium">building real things</span>,{" "}
           from point-of-sale systems and full-stack platforms to AI automation
           tools. I care about clean, scalable code and shipping products people
           actually use. Right now I'm looking for a team where I can grow fast

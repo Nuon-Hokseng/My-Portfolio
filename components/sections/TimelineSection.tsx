@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useScrollAnimation } from "hooks/useScrollAnimation";
 
 const timelineEvents = [
@@ -8,6 +9,10 @@ const timelineEvents = [
     title: "Primary School",
     school: "Kouk BanhChoin Primary School",
     description: "Laid the foundation for lifelong learning and curiosity.",
+    image: "/primary.jpg",
+    alt: "Nuon Hokseng in primary school uniform",
+    // CSS object-position: keeps the face in frame when the photo is cropped to 16:9
+    focus: "50% 35%",
   },
   {
     year: "2018",
@@ -15,6 +20,9 @@ const timelineEvents = [
     school: "Kouk BanhChoin Secondary School",
     description:
       "Discovered a love for problem-solving and built the discipline that carried into my studies.",
+    image: "/secondaryschool.jpg",
+    alt: "Nuon Hokseng speaking into a microphone at a school open day",
+    focus: "50% 30%",
   },
   {
     year: "2021",
@@ -22,6 +30,9 @@ const timelineEvents = [
     school: "Hun Sen Chumpuvorn High School",
     description:
       "Focused on math and science, and wrote my first lines of code — the spark that set my direction.",
+    image: "/highschool.jpg",
+    alt: "A group of high school classmates and a teacher outside their classroom",
+    focus: "50% 40%",
   },
   {
     year: "2024",
@@ -29,6 +40,9 @@ const timelineEvents = [
     school: "Kirirom Institute of Technology",
     description:
       "Studying software engineering with a focus on full-stack web development, databases, and building real-world projects.",
+    image: "/university.jpg",
+    alt: "Students and staff of Kirirom Institute of Technology posing together on a stage",
+    focus: "50% 85%",
   },
 ];
 
@@ -55,7 +69,8 @@ export default function TimelineSection() {
 
         <div className="relative space-y-12">
           {/* Vertical line */}
-          <div className="absolute left-4 lg:left-1/2 top-0 bottom-0 w-1 bg-linear-to-b from-accent via-accent to-transparent" />
+          {/* sits under the year dots: 22px = half the 48px mobile dot minus half the line */}
+          <div className="absolute left-[22px] lg:left-1/2 lg:-translate-x-1/2 top-0 bottom-0 w-1 bg-linear-to-b from-accent via-accent to-transparent" />
 
           {timelineEvents.map((event, index) => (
             <div
@@ -72,10 +87,10 @@ export default function TimelineSection() {
               }}
             >
               <div
-                className={`flex gap-4 lg:gap-0 ${index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"}`}
+                className={`relative flex gap-4 lg:gap-0 ${index % 2 === 0 ? "lg:justify-start" : "lg:justify-end"}`}
               >
-                {/* Timeline dot */}
-                <div className="flex justify-center lg:w-1/2 shrink-0">
+                {/* Timeline dot: pinned to the centre line on large screens */}
+                <div className="shrink-0 lg:absolute lg:left-1/2 lg:top-0 lg:-translate-x-1/2">
                   <div className="relative z-10">
                     <div className="w-12 h-12 lg:w-16 lg:h-16 bg-accent rounded-full flex items-center justify-center border-4 border-background shadow-lg shadow-accent/50 group hover:scale-110 transition-transform duration-300">
                       <span className="text-sm lg:text-xl font-bold text-accent-foreground">
@@ -86,16 +101,22 @@ export default function TimelineSection() {
                 </div>
 
                 {/* Content card */}
-                <div className="pb-8 lg:w-1/2 lg:pr-12 flex-1 xl:ml-12">
+                {/* Content card: alternates left/right of the line on large screens */}
+                <div className={`pb-8 flex-1 lg:w-1/2 lg:flex-none ${index % 2 === 0 ? "lg:pr-14" : "lg:pl-14"}`}>
                   <div className="group bg-card border border-muted hover:border-accent rounded-xl p-6 lg:p-8 transition-all duration-300 hover:shadow-lg hover:shadow-accent/10 hover:bg-card/80">
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className="text-2xl group-hover:scale-125 transition-transform duration-300">
-                        📚
-                      </span>
-                      <h3 className="text-xl lg:text-2xl font-bold text-accent">
-                        {event.title}
-                      </h3>
+                    <div className="relative mb-5 aspect-video overflow-hidden rounded-lg border border-muted">
+                      <Image
+                        src={event.image}
+                        alt={event.alt}
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 400px"
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        style={{ objectPosition: event.focus }}
+                      />
                     </div>
+                    <h3 className="mb-3 text-xl lg:text-2xl font-bold text-accent">
+                      {event.title}
+                    </h3>
                     <p className="text-muted-foreground font-semibold mb-2">
                       {event.school}
                     </p>

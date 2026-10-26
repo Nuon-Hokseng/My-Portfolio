@@ -46,15 +46,15 @@ const questions: Question[] = [
     fact: "A full POS & inventory platform — sales, stock, and analytics in one dashboard.",
   },
   {
-    q: "February 17 is a special date for me. Why?",
+    q: "In 2019–2020 I took first place in a competition. Which one?",
     options: [
-      "My birthday",
-      "I deployed my first app",
-      "My relationship anniversary 💕",
-      "National coffee day",
+      "A chess tournament",
+      "A debate championship",
+      "A hackathon",
+      "A cooking contest",
     ],
-    answer: 2,
-    fact: "It's my relationship anniversary — there's even a live countdown further down the page. 💕",
+    answer: 1,
+    fact: "A debate championship at American Bridge International School, across its 20 branches. 🏆",
   },
 ];
 

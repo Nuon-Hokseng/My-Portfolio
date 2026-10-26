@@ -1,11 +1,21 @@
 import React from "react";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Bricolage_Grotesque, Hanken_Grotesk, Noto_Sans_Khmer } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+// display: condensed via the wdth axis; body: Hanken; Khmer script: Noto
+const bricolage = Bricolage_Grotesque({
+  subsets: ["latin"],
+  axes: ["opsz", "wdth"],
+  variable: "--font-bricolage",
+});
+const hanken = Hanken_Grotesk({ subsets: ["latin"], variable: "--font-hanken" });
+const notoKhmer = Noto_Sans_Khmer({
+  subsets: ["khmer"],
+  weight: ["700", "800"],
+  variable: "--font-noto-khmer",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://nuonhokseng.vercel.app"),
@@ -50,16 +60,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${bricolage.variable} ${hanken.variable} ${notoKhmer.variable}`}
+    >
       <head>
-        {/* Set theme before paint to avoid a flash of the wrong theme */}
+        {/* Set theme before paint to avoid a flash of the wrong theme.
+            suppressHydrationWarning: browser extensions inject their own
+            <script> tags into <head>, which React would otherwise flag. */}
         <script
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem('theme');if(!t){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}if(t==='dark')document.documentElement.classList.add('dark');}catch(e){}})();`,
           }}
         />
       </head>
-      <body className={`font-sans antialiased`}>
+      <body className="font-sans antialiased">
         {children}
         <Analytics />
       </body>

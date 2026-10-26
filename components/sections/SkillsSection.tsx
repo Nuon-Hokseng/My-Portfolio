@@ -17,6 +17,8 @@ const groups: { title: string; skills: Skill[] }[] = [
   {
     title: "Backend & Databases",
     skills: [
+      { name: "NestJS", src: "/skills/nestjs.svg", size: "w-16 h-16", border: "" },
+      { name: "Node.js", src: "/skills/nodejs.svg", size: "w-16 h-16", border: "" },
       { name: "PostgreSQL", src: "/skills/postgre.png", size: "w-24 h-16", border: "" },
       { name: "MongoDB", src: "/skills/mongodb.png", size: "w-16 h-16", border: "" },
       { name: "Supabase", src: "/skills/supabase.png", size: "w-16 h-16", border: "" },
@@ -25,6 +27,11 @@ const groups: { title: string; skills: Skill[] }[] = [
   {
     title: "Tools & Platform",
     skills: [
+      { name: "Docker", src: "/skills/docker.svg", size: "w-16 h-16", border: "" },
+      { name: "AWS EC2", src: "/skills/aws-ec2.svg", size: "w-16 h-16", border: "" },
+      { name: "AWS S3", src: "/skills/aws-s3.svg", size: "w-16 h-16", border: "" },
+      { name: "Vercel", src: "/skills/vercel.svg", size: "w-16 h-16", border: "border border-white rounded-full p-3 bg-white" },
+      { name: "GitHub", src: "/skills/github.svg", size: "w-16 h-16", border: "border border-white rounded-full p-2 bg-white" },
       { name: "Linux", src: "/skills/linux.png", size: "w-16 h-16", border: "border border-white rounded-full p-1 bg-white" },
       { name: "Plasmo", src: "/skills/plasmo.png", size: "w-16 h-16", border: "border border-white rounded-full p-1 bg-white" },
     ],
@@ -67,7 +74,7 @@ export default function SkillsSection() {
                   {group.skills.map((skill, index) => (
                     <div
                       key={skill.name}
-                      className={`group flex items-center gap-4 p-5 bg-card border border-muted rounded-xl hover:border-accent hover:bg-card/80 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-accent/10 cursor-default ${
+                      className={`group flex flex-col sm:flex-row items-center text-center sm:text-left gap-3 sm:gap-4 p-4 sm:p-5 bg-card border border-muted rounded-xl hover:border-accent hover:bg-card/80 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-accent/10 cursor-default ${
                         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                       }`}
                       style={{ transitionDelay: isVisible ? `${gi * 100 + index * 50}ms` : "0ms" }}
