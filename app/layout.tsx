@@ -2,6 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, Hanken_Grotesk, Noto_Sans_Khmer } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { name, khmerName, altNames, email, siteUrl, profileUrls } from "@/lib/site";
 import "./globals.css";
 
 // display: condensed via the wdth axis; body: Hanken; Khmer script: Noto
@@ -17,41 +18,96 @@ const notoKhmer = Noto_Sans_Khmer({
   variable: "--font-noto-khmer",
 });
 
+const title = `${name} (${khmerName}) — Full-Stack Software Engineer`;
+const description = `${name} is a full-stack software engineer from Cambodia, studying at Kirirom Institute of Technology. Portfolio of Next.js, TypeScript and React projects — open to new opportunities.`;
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://nuonhokseng.vercel.app"),
-  title: "Nuon Hokseng — Software Engineer",
-  description:
-    "Full-stack software engineer specializing in Next.js, TypeScript, and scalable web apps. Building real products — and open to new opportunities.",
+  metadataBase: new URL(siteUrl),
+  title,
+  description,
+  applicationName: name,
   keywords: [
-    "Nuon Hokseng",
+    name,
+    ...altNames,
+    "Nuon Hokseng portfolio",
     "Software Engineer",
     "Full-Stack Developer",
     "Next.js",
     "TypeScript",
     "React",
+    "Kirirom Institute of Technology",
     "Cambodia",
-    "Portfolio",
   ],
-  authors: [{ name: "Nuon Hokseng" }],
-  creator: "Nuon Hokseng",
+  authors: [{ name, url: siteUrl }],
+  creator: name,
+  alternates: { canonical: "/" },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+  },
   openGraph: {
-    title: "Nuon Hokseng — Software Engineer",
-    description:
-      "Full-stack software engineer specializing in Next.js, TypeScript, and scalable web apps. Open to new opportunities.",
-    url: "https://nuonhokseng.vercel.app",
-    siteName: "Nuon Hokseng",
-    type: "website",
+    title,
+    description,
+    url: siteUrl,
+    siteName: name,
+    type: "profile",
+    firstName: "Hokseng",
+    lastName: "Nuon",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nuon Hokseng — Software Engineer",
-    description:
-      "Full-stack software engineer specializing in Next.js, TypeScript, and scalable web apps.",
+    title,
+    description,
   },
   icons: {
     icon: [{ url: "/logo.png" }],
+    apple: [{ url: "/logo.png" }],
   },
+};
+
+// Structured data so search engines know this site *is* the person, and
+// which profiles belong to them (feeds the name knowledge panel).
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${siteUrl}/#person`,
+      name,
+      alternateName: altNames,
+      givenName: "Hokseng",
+      familyName: "Nuon",
+      url: siteUrl,
+      image: `${siteUrl}/hero.png`,
+      email: `mailto:${email}`,
+      jobTitle: "Full-Stack Software Engineer",
+      description,
+      nationality: { "@type": "Country", name: "Cambodia" },
+      address: { "@type": "PostalAddress", addressCountry: "KH" },
+      alumniOf: { "@type": "CollegeOrUniversity", name: "Kirirom Institute of Technology" },
+      knowsAbout: ["Software Engineering", "Next.js", "TypeScript", "React", "Node.js", "NestJS", "Supabase", "PostgreSQL", "Docker", "AWS"],
+      sameAs: profileUrls,
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      url: siteUrl,
+      name,
+      alternateName: altNames,
+      inLanguage: "en",
+      publisher: { "@id": `${siteUrl}/#person` },
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": `${siteUrl}/#profilepage`,
+      url: siteUrl,
+      name: title,
+      isPartOf: { "@id": `${siteUrl}/#website` },
+      mainEntity: { "@id": `${siteUrl}/#person` },
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -77,6 +133,10 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+        />
         {children}
         <Analytics />
       </body>

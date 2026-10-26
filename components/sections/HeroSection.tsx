@@ -5,14 +5,8 @@ import Image from "next/image";
 import { typewriterWords } from "lib/animation";
 import { SpiderWeb } from "@/components/comic/SpiderWeb";
 import { Kaboom } from "@/components/comic/Kaboom";
+import { socials } from "@/lib/site";
 
-const socials = [
-  { label: "Email", href: "mailto:sengnoname168@gmail.com" },
-  { label: "GitHub", href: "https://github.com/Nuon-Hokseng" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/nuon-hokseng-b5b65b33b/" },
-  { label: "Facebook", href: "https://web.facebook.com/Seng.kisuke/" },
-  { label: "Telegram", href: "https://t.me/sengkennedy" },
-];
 
 export default function HeroSection() {
   const [displayText, setDisplayText] = useState("");
@@ -91,6 +85,7 @@ export default function HeroSection() {
               <li key={label}>
                 <a
                   href={href}
+                  rel="me"
                   className="font-semibold underline decoration-krama decoration-2 underline-offset-[6px] hover:text-krama"
                 >
                   {label}
