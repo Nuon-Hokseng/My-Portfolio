@@ -471,28 +471,26 @@
     line-height: 1.05;
     box-shadow: 5px 5px 0 var(--hard);
   }
-  /* tail: a skewed block plus a patch hiding the bubble border where they join */
-  .speech-bubble::after {
-    content: '';
-    position: absolute;
-    right: 26px;
-    bottom: -22px;
-    width: 26px;
-    height: 22px;
-    background: #fff;
-    border-right: 3px solid #14193f;
-    transform: skewX(34deg);
-    transform-origin: top right;
-  }
+  /* tail: an ink triangle with a smaller white one on top, so it ends in an outlined point.
+     The white one starts at the bubble's inner edge to open a gap in the bottom border. */
+  .speech-bubble::after,
   .speech-bubble::before {
     content: '';
     position: absolute;
+    right: 22px;
+    bottom: -33px;
+    width: 36px;
+  }
+  .speech-bubble::after {
+    height: 30px;
+    background: #14193f;
+    clip-path: polygon(0 100%, 10.8px 0, 100% 0);
+  }
+  .speech-bubble::before {
     z-index: 1;
-    right: 31px;
-    bottom: -3px;
-    width: 20px;
-    height: 5px;
+    height: 33px;
     background: #fff;
+    clip-path: polygon(6.6px 23.6px, 15.1px 0, 34.9px 0);
   }
 
   /* small layered explosion with outlined lettering */
