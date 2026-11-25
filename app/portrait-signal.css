@@ -135,3 +135,33 @@
     filter: none !important;
   }
 }
+/* Random idle channel changes use the whole portrait; interaction is a clean scan. */
+.poster-portrait[data-idle-signal] .portrait-signal {
+  mask-image: none;
+}
+.poster-portrait[data-idle-signal] .portrait-color {
+  mask-image: none;
+  opacity: 0.85;
+}
+.poster-portrait[data-hover] .portrait-signal {
+  opacity: 1;
+}
+.poster-portrait[data-hover] .portrait-scanlines {
+  animation: portrait-hover-scan 3s ease-in-out infinite;
+}
+@keyframes portrait-hover-scan {
+  0%,
+  100% {
+    opacity: 0.08;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.2;
+    transform: translateY(6px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .portrait-signal {
+    display: none !important;
+  }
+}

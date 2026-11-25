@@ -9,7 +9,7 @@ export function PortraitSpotlight() {
   const frame = useRef<number | null>(null);
   const position = useRef({ x: 0, y: 0 });
   const glitchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const lastGlitch = useRef(-Infinity);
+
   const clear = useCallback(() => {
     if (frame.current !== null) cancelAnimationFrame(frame.current);
     frame.current = null;
@@ -20,15 +20,48 @@ export function PortraitSpotlight() {
   }, []);
   useEffect(() => {
     const preference = matchMedia("(prefers-reduced-motion: reduce)");
-    const visibilityChanged = () => {
-      if (document.hidden) clear();
-    };
-    preference.addEventListener("change", clear);
-    document.addEventListener("visibilitychange", visibilityChanged);
-    return () => {
-      preference.removeEventListener("change", clear);
-      document.removeEventListener("visibilitychange", visibilityChanged);
+    let visible = false;
+    let timer: ReturnType<typeof setTimeout>;
+    const stop = () => {
+      clearTimeout(timer);
       clear();
+      ref.current?.removeAttribute("data-idle-signal");
+    };
+    const schedule = () => {
+      clearTimeout(timer);
+      if (!visible || document.hidden || preference.matches) return;
+      timer = setTimeout(
+        () => {
+          const element = ref.current;
+          if (element && !element.hasAttribute("data-hover")) {
+            element.setAttribute("data-idle-signal", "true");
+            element.setAttribute("data-glitch", "true");
+            glitchTimer.current = setTimeout(() => {
+              element.removeAttribute("data-glitch");
+              element.removeAttribute("data-idle-signal");
+            }, 720);
+          }
+          schedule();
+        },
+        2800 + Math.random() * 4200,
+      );
+    };
+    const update = () => {
+      stop();
+      schedule();
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      update();
+    });
+    if (ref.current) observer.observe(ref.current);
+    preference.addEventListener("change", update);
+    document.addEventListener("visibilitychange", update);
+    return () => {
+      observer.disconnect();
+      preference.removeEventListener("change", update);
+      document.removeEventListener("visibilitychange", update);
+      stop();
     };
   }, [clear]);
   const move = (event: PointerEvent<HTMLDivElement>) => {
@@ -57,18 +90,8 @@ export function PortraitSpotlight() {
       if (element) {
         element.style.setProperty("--spot-x", `${position.current.x}px`);
         element.style.setProperty("--spot-y", `${position.current.y}px`);
-        if (
-          !element.hasAttribute("data-hover") &&
-          performance.now() - lastGlitch.current > 1200 &&
-          !matchMedia("(prefers-reduced-motion: reduce)").matches
-        ) {
-          lastGlitch.current = performance.now();
-          element.setAttribute("data-glitch", "true");
-          glitchTimer.current = setTimeout(() => {
-            element.removeAttribute("data-glitch");
-            glitchTimer.current = null;
-          }, 720);
-        }
+        element.removeAttribute("data-glitch");
+        element.removeAttribute("data-idle-signal");
         element.setAttribute("data-hover", "true");
       }
       frame.current = null;
