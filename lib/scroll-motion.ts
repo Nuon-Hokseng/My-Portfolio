@@ -33,46 +33,45 @@ export type MotionEffect = (typeof motionGroups)[number]["effect"];
 export function entranceFrames(
   effect: MotionEffect,
   compact: boolean,
-  index: number,
 ): Keyframe[] {
   const distance = compact ? 0.65 : 1;
   let transform: string;
   switch (effect) {
     case "heading":
-      transform = `translateY(${32 * distance}px)`;
+      transform = `translateY(${20 * distance}px)`;
       break;
     case "stat":
-      transform = `translateY(${40 * distance}px) scale(.94)`;
+      transform = `translateY(${22 * distance}px)`;
       break;
     case "left":
-      transform = `translateX(${-44 * distance}px)`;
+      transform = `translateX(${-24 * distance}px)`;
       break;
     case "right":
-      transform = `translateX(${44 * distance}px)`;
+      transform = `translateX(${24 * distance}px)`;
       break;
     case "fan":
-      transform = `translateY(${64 * distance}px) rotate(${(index - 1) * (compact ? 1 : 2)}deg) scale(.95)`;
+      transform = `translateY(${28 * distance}px)`;
       break;
     case "timeline":
-      transform = `translateX(${-28 * distance}px)`;
+      transform = `translateX(${-18 * distance}px)`;
       break;
     case "photo":
-      transform = `translateY(${28 * distance}px) scale(${compact ? 1.025 : 1.055})`;
+      transform = `translateY(${18 * distance}px) scale(1.015)`;
       break;
     case "project":
-      transform = `translateY(${56 * distance}px) rotate(${(index % 2 ? 1 : -1) * (compact ? 0.6 : 1.2)}deg) scale(.97)`;
+      transform = `translateY(${28 * distance}px)`;
       break;
     case "zoom":
-      transform = `translateY(${24 * distance}px) scale(.91)`;
+      transform = `translateY(${18 * distance}px) scale(.98)`;
       break;
     case "award":
-      transform = `translateY(${26 * distance}px) rotate(-.7deg) scale(.95)`;
+      transform = `translateY(${20 * distance}px)`;
       break;
     case "contact":
-      transform = `translateY(${64 * distance}px)`;
+      transform = `translateY(${30 * distance}px)`;
       break;
     case "quiet":
-      transform = `translateY(${20 * distance}px)`;
+      transform = `translateY(${14 * distance}px)`;
       break;
   }
   return [

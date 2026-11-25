@@ -80,309 +80,231 @@
     {
       "device": "desktop",
       "effect": "stat",
-      "start": {
-        "transform": "matrix(0.942264, 0, 0, 0.942264, 0, 38.4903)",
-        "opacity": "0.0377421"
-      },
-      "middle": {
-        "transform": "matrix(0.989584, 0, 0, 0.989584, 0, 6.94383)",
-        "opacity": "0.826404"
-      },
+      "durationMs": 1100,
+      "delayMs": 0,
+      "frames": 170,
+      "monotonicOpacity": true,
       "completed": true
     },
     {
       "device": "desktop",
       "effect": "fan",
-      "start": {
-        "transform": "matrix(0.949421, -0.0331545, 0.0331545, 0.949421, 0, 64)",
-        "opacity": "0"
-      },
-      "middle": {
-        "transform": "matrix(0.986418, -0.00932305, 0.00932305, 0.986418, 0, 17.3283)",
-        "opacity": "0.729245"
-      },
+      "durationMs": 1100,
+      "delayMs": 0,
+      "frames": 181,
+      "monotonicOpacity": true,
       "completed": true
     },
     {
       "device": "desktop",
       "effect": "left",
-      "start": {
-        "transform": "matrix(1, 0, 0, 1, -44, 0)",
-        "opacity": "0"
-      },
-      "middle": {
-        "transform": "matrix(1, 0, 0, 1, -9.05517, 0)",
-        "opacity": "0.794201"
-      },
+      "durationMs": 1100,
+      "delayMs": 0,
+      "frames": 162,
+      "monotonicOpacity": true,
       "completed": true
     },
     {
       "device": "desktop",
       "effect": "right",
-      "start": {
-        "transform": "matrix(1, 0, 0, 1, 42.335, 0)",
-        "opacity": "0.0378414"
-      },
-      "middle": {
-        "transform": "matrix(1, 0, 0, 1, 8.09056, 0)",
-        "opacity": "0.816124"
-      },
+      "durationMs": 1100,
+      "delayMs": 0,
+      "frames": 181,
+      "monotonicOpacity": true,
       "completed": true
     },
     {
       "device": "desktop",
       "effect": "timeline",
-      "start": {
-        "transform": "matrix(1, 0, 0, 1, -28, 0)",
-        "opacity": "0"
-      },
-      "middle": {
-        "transform": "matrix(1, 0, 0, 1, -5.77084, 0)",
-        "opacity": "0.793899"
-      },
+      "durationMs": 1100,
+      "delayMs": 0,
+      "frames": 177,
+      "monotonicOpacity": true,
       "completed": true
     },
     {
       "device": "desktop",
       "effect": "photo",
-      "start": {
-        "transform": "matrix(1.055, 0, 0, 1.055, 0, 28)",
-        "opacity": "0"
-      },
-      "middle": {
-        "transform": "matrix(1.01233, 0, 0, 1.01233, 0, 6.27707)",
-        "opacity": "0.775819"
-      },
+      "durationMs": 1100,
+      "delayMs": 0,
+      "frames": 181,
+      "monotonicOpacity": true,
       "completed": true
     },
     {
       "device": "desktop",
       "effect": "project",
-      "start": {
-        "transform": "matrix(0.970939, -0.0195677, 0.0195677, 0.970939, 0, 53.8788)",
-        "opacity": "0.0378787"
-      },
-      "middle": {
-        "transform": "matrix(0.993805, -0.00429147, 0.00429147, 0.993805, 0, 11.546)",
-        "opacity": "0.793822"
-      },
+      "durationMs": 1100,
+      "delayMs": 0,
+      "frames": 147,
+      "monotonicOpacity": true,
       "completed": true
     },
     {
       "device": "desktop",
       "effect": "zoom",
-      "start": {
-        "transform": "matrix(0.913424, 0, 0, 0.913424, 0, 23.087)",
-        "opacity": "0.0380401"
-      },
-      "middle": {
-        "transform": "matrix(0.981466, 0, 0, 0.981466, 0, 4.94246)",
-        "opacity": "0.794064"
-      },
+      "durationMs": 1100,
+      "delayMs": 0,
+      "frames": 178,
+      "monotonicOpacity": true,
       "completed": true
     },
     {
       "device": "desktop",
       "effect": "award",
-      "start": {
-        "transform": "matrix(0.949929, -0.0116062, 0.0116062, 0.949929, 0, 26)",
-        "opacity": "0"
-      },
-      "middle": {
-        "transform": "matrix(0.989098, -0.00263389, 0.00263389, 0.989098, 0, 5.66702)",
-        "opacity": "0.782038"
-      },
+      "durationMs": 1100,
+      "delayMs": 0,
+      "frames": 181,
+      "monotonicOpacity": true,
       "completed": true
     },
     {
       "device": "desktop",
       "effect": "quiet",
-      "start": {
-        "transform": "matrix(1, 0, 0, 1, 0, 20)",
-        "opacity": "0"
-      },
-      "middle": {
-        "transform": "matrix(1, 0, 0, 1, 0, 4.7516)",
-        "opacity": "0.76242"
-      },
+      "durationMs": 1100,
+      "delayMs": 0,
+      "frames": 180,
+      "monotonicOpacity": true,
       "completed": true
     },
     {
       "device": "desktop",
       "effect": "contact",
-      "start": {
-        "transform": "matrix(1, 0, 0, 1, 0, 61.9243)",
-        "opacity": "0.0324328"
-      },
-      "middle": {
-        "transform": "matrix(1, 0, 0, 1, 0, 16.5341)",
-        "opacity": "0.741655"
-      },
+      "durationMs": 1100,
+      "delayMs": 0,
+      "frames": 180,
+      "monotonicOpacity": true,
       "completed": true
     },
     {
       "device": "android-emulated",
       "effect": "stat",
-      "start": {
-        "transform": "matrix(0.942269, 0, 0, 0.942269, 0, 25.0166)",
-        "opacity": "0.0378228"
-      },
-      "middle": {
-        "transform": "matrix(0.98764, 0, 0, 0.98764, 0, 5.35608)",
-        "opacity": "0.793997"
-      },
+      "durationMs": 1100,
+      "delayMs": 0,
+      "frames": 180,
+      "monotonicOpacity": true,
       "completed": true
     },
     {
       "device": "android-emulated",
       "effect": "fan",
-      "start": {
-        "transform": "matrix(0.949855, -0.0165798, 0.0165798, 0.949855, 0, 41.6)",
-        "opacity": "0"
-      },
-      "middle": {
-        "transform": "matrix(0.98557, -0.00495994, 0.00495994, 0.98557, 0, 11.995)",
-        "opacity": "0.711658"
-      },
+      "durationMs": 1100,
+      "delayMs": 0,
+      "frames": 180,
+      "monotonicOpacity": true,
       "completed": true
     },
     {
       "device": "android-emulated",
       "effect": "left",
-      "start": {
-        "transform": "matrix(1, 0, 0, 1, -28.6, 0)",
-        "opacity": "0"
-      },
-      "middle": {
-        "transform": "matrix(1, 0, 0, 1, -7.37655, 0)",
-        "opacity": "0.742079"
-      },
+      "durationMs": 1100,
+      "delayMs": 0,
+      "frames": 183,
+      "monotonicOpacity": true,
       "completed": true
     },
     {
       "device": "android-emulated",
       "effect": "right",
-      "start": {
-        "transform": "matrix(1, 0, 0, 1, 28.6, 0)",
-        "opacity": "0"
-      },
-      "middle": {
-        "transform": "matrix(1, 0, 0, 1, 6.69346, 0)",
-        "opacity": "0.765963"
-      },
+      "durationMs": 1100,
+      "delayMs": 0,
+      "frames": 183,
+      "monotonicOpacity": true,
       "completed": true
     },
     {
       "device": "android-emulated",
       "effect": "timeline",
-      "start": {
-        "transform": "matrix(1, 0, 0, 1, -18.2, 0)",
-        "opacity": "0"
-      },
-      "middle": {
-        "transform": "matrix(1, 0, 0, 1, -4.07488, 0)",
-        "opacity": "0.776106"
-      },
+      "durationMs": 1100,
+      "delayMs": 0,
+      "frames": 180,
+      "monotonicOpacity": true,
       "completed": true
     },
     {
       "device": "android-emulated",
       "effect": "photo",
-      "start": {
-        "transform": "matrix(1.025, 0, 0, 1.025, 0, 18.2)",
-        "opacity": "0"
-      },
-      "middle": {
-        "transform": "matrix(1.00566, 0, 0, 1.00566, 0, 4.12172)",
-        "opacity": "0.773532"
-      },
+      "durationMs": 1100,
+      "delayMs": 0,
+      "frames": 180,
+      "monotonicOpacity": true,
       "completed": true
     },
     {
       "device": "android-emulated",
       "effect": "project",
-      "start": {
-        "transform": "matrix(0.971096, -0.00978133, 0.00978133, 0.971096, 0, 35.0101)",
-        "opacity": "0.0381828"
-      },
-      "middle": {
-        "transform": "matrix(0.994319, -0.00197108, 0.00197108, 0.994319, 0, 6.89051)",
-        "opacity": "0.8107"
-      },
+      "durationMs": 1100,
+      "delayMs": 0,
+      "frames": 169,
+      "monotonicOpacity": true,
       "completed": true
     },
     {
       "device": "android-emulated",
       "effect": "zoom",
-      "start": {
-        "transform": "matrix(0.91337, 0, 0, 0.91337, 0, 15.0159)",
-        "opacity": "0.0374441"
-      },
-      "middle": {
-        "transform": "matrix(0.981449, 0, 0, 0.981449, 0, 3.21548)",
-        "opacity": "0.793879"
-      },
+      "durationMs": 1100,
+      "delayMs": 0,
+      "frames": 177,
+      "monotonicOpacity": true,
       "completed": true
     },
     {
       "device": "android-emulated",
       "effect": "award",
-      "start": {
-        "transform": "matrix(0.949929, -0.0116062, 0.0116062, 0.949929, 0, 16.9)",
-        "opacity": "0"
-      },
-      "middle": {
-        "transform": "matrix(0.987804, -0.00294268, 0.00294268, 0.987804, 0, 4.12081)",
-        "opacity": "0.756165"
-      },
+      "durationMs": 1100,
+      "delayMs": 0,
+      "frames": 180,
+      "monotonicOpacity": true,
       "completed": true
     },
     {
       "device": "android-emulated",
       "effect": "quiet",
-      "start": {
-        "transform": "matrix(1, 0, 0, 1, 0, 12.5204)",
-        "opacity": "0.0368914"
-      },
-      "middle": {
-        "transform": "matrix(1, 0, 0, 1, 0, 2.92066)",
-        "opacity": "0.775334"
-      },
+      "durationMs": 1100,
+      "delayMs": 0,
+      "frames": 180,
+      "monotonicOpacity": true,
       "completed": true
     },
     {
       "device": "android-emulated",
       "effect": "contact",
-      "start": {
-        "transform": "matrix(1, 0, 0, 1, 0, 41.6)",
-        "opacity": "0"
-      },
-      "middle": {
-        "transform": "matrix(1, 0, 0, 1, 0, 12.6602)",
-        "opacity": "0.695669"
-      },
+      "durationMs": 1100,
+      "delayMs": 0,
+      "frames": 180,
+      "monotonicOpacity": true,
       "completed": true
     }
   ],
-  "checks": [
-    "All eight post-hero sections have motion targets",
-    "Eleven distinct entrance presets visibly advance and finish on desktop and Android emulation",
-    "Revisiting a section replays its entrance",
-    "Gallery filters and volunteer tabs register their newly mounted content",
-    "Live reduced-motion changes cancel animations and restore all content",
-    "Reduced motion at load has no spatial entrance animation",
-    "Micro hover response works independently from entrance transforms",
-    "Normal and 4x CPU scroll frame pacing measured; no universal frame-rate guarantee"
+  "stability": [
+    {
+      "device": "desktop",
+      "cpuThrottle": 1,
+      "entranceStarts": 1,
+      "directionReversals": 8,
+      "revisits": 3,
+      "opacityResets": 0
+    },
+    {
+      "device": "android-emulated",
+      "cpuThrottle": 4,
+      "entranceStarts": 1,
+      "directionReversals": 8,
+      "revisits": 3,
+      "opacityResets": 0
+    }
   ],
-  "errors": [],
-  "desktopScrollPacing": {
-    "frames": 120,
-    "meanMs": 6.8283333333333305,
-    "p95Ms": 6.200000000000728
-  },
-  "androidScrollPacing4xCPU": {
-    "frames": 120,
-    "meanMs": 7.131666666666661,
-    "p95Ms": 12.200000000000728
-  }
+  "checks": [
+    "All eight post-hero sections retain motion targets",
+    "Offscreen elements are prepared before entry, never visible-then-hidden",
+    "Eleven presets use 1100ms gentle easing with at most 120ms stagger",
+    "Frame-by-frame opacity increases monotonically through each entrance",
+    "Rapid direction reversals, edge jitter and repeat visits never restart or reset opacity",
+    "Android stability also checked under 4x CPU slowdown",
+    "Initially visible and deep-linked content stays readable without an entrance",
+    "Visible gallery replacements do not flash; keyboard focus settles moving controls",
+    "Reduced motion at load and preference changes preserve all content without replays",
+    "Fine-pointer micro-interactions still work independently"
+  ],
+  "errors": []
 }

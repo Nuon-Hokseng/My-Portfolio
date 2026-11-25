@@ -9,16 +9,18 @@ import {
 type Target = {
   effect: MotionEffect;
   index: number;
-  played: boolean;
   animation?: Animation;
 };
 
-/** Native, replayable entrances; base content stays readable without JavaScript. */
+/** Prepare offscreen, reveal once, and never hide content the visitor has seen. */
 export function ScrollMotion() {
   useEffect(() => {
     if (!("IntersectionObserver" in window) || !Element.prototype.animate)
       return;
     const preference = matchMedia("(prefers-reduced-motion: reduce)");
+    const linkedSection = document
+      .getElementById(location.hash.slice(1))
+      ?.closest("section");
     const targets = new Map<HTMLElement, Target>();
     let registrationFrame: number | null = null;
 
@@ -26,6 +28,8 @@ export function ScrollMotion() {
       target.animation?.cancel();
       target.animation = undefined;
       element.dataset.motionState = "settled";
+      element.style.removeProperty("--motion-from");
+      enter.unobserve(element);
     };
     const enter = new IntersectionObserver(
       (entries) => {
@@ -35,34 +39,31 @@ export function ScrollMotion() {
           if (
             !target ||
             !entry.isIntersecting ||
-            target.played ||
+            element.dataset.motionState !== "ready" ||
             preference.matches ||
             document.hidden
           )
             continue;
-          const rect = element.getBoundingClientRect();
-          if (
-            rect.bottom <= 0 ||
-            rect.top >= innerHeight ||
-            !element.isConnected
-          )
-            continue;
-          target.played = true;
-          element.dataset.motionState = "running";
+          if (!element.isConnected) continue;
+          enter.unobserve(element);
           const animation = element.animate(
-            entranceFrames(target.effect, innerWidth <= 760, target.index),
+            [
+              {
+                transform: element.style.getPropertyValue("--motion-from"),
+                opacity: 0,
+              },
+              { transform: "none", opacity: 1 },
+            ],
             {
               id: `portfolio-${target.effect}`,
-              duration:
-                target.effect === "fan" || target.effect === "contact"
-                  ? 850
-                  : 720,
-              delay: Math.min(target.index * 75, 225),
-              easing: "cubic-bezier(.22,1,.36,1)",
-              fill: "backwards",
+              duration: 1100,
+              delay: Math.min(target.index * 60, 120),
+              easing: "cubic-bezier(.25,.46,.45,.94)",
+              fill: "both",
             },
           );
           target.animation = animation;
+          element.dataset.motionState = "running";
           animation.addEventListener(
             "finish",
             () => {
@@ -72,23 +73,8 @@ export function ScrollMotion() {
           );
         }
       },
-      { threshold: 0, rootMargin: "0px 0px -60px 0px" },
-    );
-
-    // A wider exit region prevents repeated flashing near the viewport edge.
-    const rearm = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) continue;
-          const element = entry.target as HTMLElement;
-          const target = targets.get(element);
-          if (target) {
-            finish(element, target);
-            target.played = false;
-          }
-        }
-      },
-      { threshold: 0, rootMargin: "200px 0px 200px 0px" },
+      // Begin just before visibility, not after the content has already appeared.
+      { threshold: 0, rootMargin: "0px 0px 80px 0px" },
     );
 
     const register = () => {
@@ -96,8 +82,6 @@ export function ScrollMotion() {
       for (const [element, target] of targets) {
         if (element.isConnected) continue;
         finish(element, target);
-        enter.unobserve(element);
-        rearm.unobserve(element);
         targets.delete(element);
       }
       for (const group of motionGroups) {
@@ -105,14 +89,28 @@ export function ScrollMotion() {
           .querySelectorAll<HTMLElement>(group.selector)
           .forEach((element, index) => {
             if (targets.has(element)) return;
-            targets.set(element, {
+            const target: Target = {
               effect: group.effect,
               index,
-              played: false,
-            });
+            };
+            targets.set(element, target);
             element.dataset.motion = group.effect;
+            const rect = element.getBoundingClientRect();
+            // Hydration, restored scroll and visible filter updates must not blink.
+            if (
+              preference.matches ||
+              document.hidden ||
+              linkedSection?.contains(element) ||
+              rect.top < innerHeight ||
+              !rect.height
+            ) {
+              finish(element, target);
+              return;
+            }
+            const [from] = entranceFrames(group.effect, innerWidth <= 760);
+            element.style.setProperty("--motion-from", String(from.transform));
+            element.dataset.motionState = "ready";
             enter.observe(element);
-            rearm.observe(element);
           });
       }
     };
@@ -136,20 +134,23 @@ export function ScrollMotion() {
     const preferenceChanged = () => {
       for (const [element, target] of targets) {
         finish(element, target);
-        target.played = false;
-        enter.unobserve(element);
-        enter.observe(element);
       }
     };
     const visibilityChanged = () => {
       if (document.hidden)
         for (const [element, target] of targets) finish(element, target);
     };
+    const focusChanged = (event: FocusEvent) => {
+      if (!(event.target instanceof Element)) return;
+      const element = event.target.closest<HTMLElement>("[data-motion]");
+      const target = element && targets.get(element);
+      if (element && target) finish(element, target);
+    };
     preference.addEventListener("change", preferenceChanged);
     document.addEventListener("visibilitychange", visibilityChanged);
+    main?.addEventListener("focusin", focusChanged);
     return () => {
       enter.disconnect();
-      rearm.disconnect();
       mutations.disconnect();
       if (registrationFrame !== null) cancelAnimationFrame(registrationFrame);
       for (const [element, target] of targets) {
@@ -159,6 +160,7 @@ export function ScrollMotion() {
       }
       preference.removeEventListener("change", preferenceChanged);
       document.removeEventListener("visibilitychange", visibilityChanged);
+      main?.removeEventListener("focusin", focusChanged);
     };
   }, []);
   return null;
