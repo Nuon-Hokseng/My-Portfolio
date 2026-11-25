@@ -371,10 +371,15 @@ body {
   font-weight: 550;
 }
 .project-dialog {
+  /* Explicitly restore centering removed by the global margin reset. */
+  position: fixed;
+  inset: 0;
+  margin: auto;
   padding: 35px;
   width: min(780px, calc(100% - 32px));
   max-width: 780px;
   max-height: 88svh;
+  max-height: min(88svh, calc(100dvh - 32px));
   overflow: auto;
   overscroll-behavior: contain;
   border: 1px solid var(--line);

@@ -19,13 +19,14 @@ const report = {
   viewports: [],
   checks: [],
   accessibility: [],
+  modals: [],
   errors: [],
 };
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 async function loadImages(page) {
   await page.evaluate(async () => {
     for (let y = 0; y < document.documentElement.scrollHeight; y += 650) {
-      scrollTo(0, y);
+      scrollTo({ top: y, behavior: "instant" });
       await new Promise((resolve) => setTimeout(resolve, 40));
     }
   });
@@ -35,7 +36,45 @@ async function loadImages(page) {
     { timeout: 30000 },
   );
   await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
-  await page.waitForTimeout(650);
+  await page.waitForTimeout(1200);
+}
+async function checkModalCenter(page, label) {
+  const geometry = await page.locator("dialog[open]").evaluate((el) => {
+    const r = el.getBoundingClientRect();
+    return {
+      left: r.left,
+      right: innerWidth - r.right,
+      top: r.top,
+      bottom: innerHeight - r.bottom,
+      scrollable: el.scrollHeight > el.clientHeight,
+    };
+  });
+  assert.ok(
+    Math.abs(geometry.left - geometry.right) <= 1,
+    `${label}: horizontal center`,
+  );
+  assert.ok(
+    Math.abs(geometry.top - geometry.bottom) <= 1,
+    `${label}: vertical center`,
+  );
+  assert.ok(
+    Math.min(geometry.left, geometry.right, geometry.top, geometry.bottom) >=
+      15,
+    `${label}: viewport gutters`,
+  );
+  await page.locator("dialog[open]").evaluate((el) => {
+    el.scrollTop = el.scrollHeight;
+  });
+  assert.ok(
+    await page
+      .locator("dialog[open]")
+      .evaluate((el) => el.scrollTop > 0 || el.scrollHeight <= el.clientHeight),
+    `${label}: all content reachable`,
+  );
+  await page.locator("dialog[open]").evaluate((el) => {
+    el.scrollTop = 0;
+  });
+  report.modals.push({ label, ...geometry });
 }
 try {
   for (const scheme of ["light", "dark"])
@@ -107,12 +146,10 @@ try {
               nodes: v.nodes.map((n) => n.target),
             })),
           });
-          const palette = await page
-            .locator(".nav-links")
-            .evaluate((el) => ({
-              background: getComputedStyle(el).backgroundColor,
-              text: getComputedStyle(el).color,
-            }));
+          const palette = await page.locator(".nav-links").evaluate((el) => ({
+            background: getComputedStyle(el).backgroundColor,
+            text: getComputedStyle(el).color,
+          }));
           assert.notEqual(
             palette.background,
             palette.text,
@@ -200,6 +237,7 @@ try {
   await openProject.click();
   await page.locator("dialog[open]").waitFor();
   assert.match(await page.locator("#project-title").innerText(), /Premier/);
+  await checkModalCenter(page, "desktop");
   await page.keyboard.press("Escape");
   await page.locator("dialog").waitFor({ state: "detached" });
   assert.ok(await openProject.evaluate((el) => el === document.activeElement));
@@ -325,6 +363,7 @@ try {
   const touch = await browser.newContext({
     ...devices["Pixel 7"],
     viewport: { width: 390, height: 844 },
+    colorScheme: "dark",
   });
   const mobile = await touch.newPage();
   await mobile.goto(url, { waitUntil: "networkidle" });
@@ -411,6 +450,35 @@ try {
   await mobile.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
   report.checks.push(
     "Android portrait starts grayscale, follows real finger input, clears on lift/cancel, and preserves vertical scroll",
+  );
+  for (const [width, height] of [
+    [390, 844],
+    [320, 640],
+    [844, 390],
+  ]) {
+    await mobile.setViewportSize({ width, height });
+    await mobile
+      .getByRole("button", {
+        name: "Premier Optic / Workspace: view project",
+        exact: true,
+      })
+      .click();
+    await mobile.locator("dialog[open]").waitFor();
+    await checkModalCenter(mobile, `android-${width}x${height}`);
+    if (width === 390) {
+      await mobile.waitForFunction(() => {
+        const image = document.querySelector("dialog .photo-frame img");
+        return image?.complete && image.naturalWidth > 0;
+      });
+      await mobile.screenshot({ path: `${out}/modal-mobile-centered.png` });
+    }
+    await mobile
+      .getByRole("button", { name: "Close project details", exact: true })
+      .click();
+    await mobile.locator("dialog").waitFor({ state: "detached" });
+  }
+  report.checks.push(
+    "Project modal stays centered with equal gutters on desktop, narrow Android and landscape; long content scrolls internally",
   );
   await mobile.setViewportSize({ width: 320, height: 844 });
   await mobile.locator("#extras summary").nth(1).click();

@@ -1,53 +1,164 @@
 "use client";
 import { useEffect } from "react";
-/** Enhances visible base content with finite, one-time entrances. */
+import {
+  entranceFrames,
+  motionGroups,
+  type MotionEffect,
+} from "@/lib/scroll-motion";
+
+type Target = {
+  effect: MotionEffect;
+  index: number;
+  played: boolean;
+  animation?: Animation;
+};
+
+/** Native, replayable entrances; base content stays readable without JavaScript. */
 export function ScrollMotion() {
   useEffect(() => {
+    if (!("IntersectionObserver" in window) || !Element.prototype.animate)
+      return;
     const preference = matchMedia("(prefers-reduced-motion: reduce)");
-    if (preference.matches || !("IntersectionObserver" in window)) return;
-    const animations = new Set<Animation>();
-    const observer = new IntersectionObserver(
+    const targets = new Map<HTMLElement, Target>();
+    let registrationFrame: number | null = null;
+
+    const finish = (element: HTMLElement, target: Target) => {
+      target.animation?.cancel();
+      target.animation = undefined;
+      element.dataset.motionState = "settled";
+    };
+    const enter = new IntersectionObserver(
       (entries) => {
-        let delay = 0;
         for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          observer.unobserve(entry.target);
-          if (preference.matches || typeof entry.target.animate !== "function")
+          const element = entry.target as HTMLElement;
+          const target = targets.get(element);
+          if (
+            !target ||
+            !entry.isIntersecting ||
+            target.played ||
+            preference.matches ||
+            document.hidden
+          )
             continue;
-          const animation = entry.target.animate(
-            [
-              { transform: "translateY(12px)", opacity: 0.85 },
-              { transform: "translateY(0)", opacity: 1 },
-            ],
+          const rect = element.getBoundingClientRect();
+          if (
+            rect.bottom <= 0 ||
+            rect.top >= innerHeight ||
+            !element.isConnected
+          )
+            continue;
+          target.played = true;
+          element.dataset.motionState = "running";
+          const animation = element.animate(
+            entranceFrames(target.effect, innerWidth <= 760, target.index),
             {
-              duration: 460,
-              delay: Math.min(delay, 150),
+              id: `portfolio-${target.effect}`,
+              duration:
+                target.effect === "fan" || target.effect === "contact"
+                  ? 850
+                  : 720,
+              delay: Math.min(target.index * 75, 225),
               easing: "cubic-bezier(.22,1,.36,1)",
+              fill: "backwards",
             },
           );
-          animations.add(animation);
+          target.animation = animation;
           animation.addEventListener(
             "finish",
-            () => animations.delete(animation),
+            () => {
+              if (target.animation === animation) finish(element, target);
+            },
             { once: true },
           );
-          delay += 50;
         }
       },
-      { threshold: 0, rootMargin: "0px 0px -45px 0px" },
+      { threshold: 0, rootMargin: "0px 0px -60px 0px" },
     );
-    document
-      .querySelectorAll("[data-reveal]")
-      .forEach((element) => observer.observe(element));
-    const cancel = () => {
-      if (preference.matches)
-        animations.forEach((animation) => animation.cancel());
+
+    // A wider exit region prevents repeated flashing near the viewport edge.
+    const rearm = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) continue;
+          const element = entry.target as HTMLElement;
+          const target = targets.get(element);
+          if (target) {
+            finish(element, target);
+            target.played = false;
+          }
+        }
+      },
+      { threshold: 0, rootMargin: "200px 0px 200px 0px" },
+    );
+
+    const register = () => {
+      registrationFrame = null;
+      for (const [element, target] of targets) {
+        if (element.isConnected) continue;
+        finish(element, target);
+        enter.unobserve(element);
+        rearm.unobserve(element);
+        targets.delete(element);
+      }
+      for (const group of motionGroups) {
+        document
+          .querySelectorAll<HTMLElement>(group.selector)
+          .forEach((element, index) => {
+            if (targets.has(element)) return;
+            targets.set(element, {
+              effect: group.effect,
+              index,
+              played: false,
+            });
+            element.dataset.motion = group.effect;
+            enter.observe(element);
+            rearm.observe(element);
+          });
+      }
     };
-    preference.addEventListener("change", cancel);
+    register();
+    // Gallery filters and lazy-loaded sections need the same choreography.
+    const mutations = new MutationObserver((records) => {
+      if (
+        registrationFrame !== null ||
+        !records.some((record) =>
+          [...record.addedNodes, ...record.removedNodes].some(
+            (node) => node instanceof Element,
+          ),
+        )
+      )
+        return;
+      registrationFrame = requestAnimationFrame(register);
+    });
+    const main = document.querySelector("main");
+    if (main) mutations.observe(main, { childList: true, subtree: true });
+
+    const preferenceChanged = () => {
+      for (const [element, target] of targets) {
+        finish(element, target);
+        target.played = false;
+        enter.unobserve(element);
+        enter.observe(element);
+      }
+    };
+    const visibilityChanged = () => {
+      if (document.hidden)
+        for (const [element, target] of targets) finish(element, target);
+    };
+    preference.addEventListener("change", preferenceChanged);
+    document.addEventListener("visibilitychange", visibilityChanged);
     return () => {
-      observer.disconnect();
-      animations.forEach((animation) => animation.cancel());
-      preference.removeEventListener("change", cancel);
+      enter.disconnect();
+      rearm.disconnect();
+      mutations.disconnect();
+      if (registrationFrame !== null) cancelAnimationFrame(registrationFrame);
+      for (const [element, target] of targets) {
+        finish(element, target);
+        delete element.dataset.motion;
+        delete element.dataset.motionState;
+      }
+      preference.removeEventListener("change", preferenceChanged);
+      document.removeEventListener("visibilitychange", visibilityChanged);
     };
   }, []);
   return null;

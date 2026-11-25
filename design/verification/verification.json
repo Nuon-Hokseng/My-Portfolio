@@ -70,6 +70,7 @@
     "Theme persists, mobile navigation works, reduced motion disables spatial transitions and smooth scrolling",
     "Canonical, metadata, connected ProfilePage/Person schema, sitemap, robots, OG image and both theme icons",
     "Android portrait starts grayscale, follows real finger input, clears on lift/cancel, and preserves vertical scroll",
+    "Project modal stays centered with equal gutters on desktop, narrow Android and landscape; long content scrolls internally",
     "Touch game controls fit at 320px; closing releases the canvas",
     "No-JS visit retains readable content, working anchors, CV and mobile navigation"
   ],
@@ -105,6 +106,40 @@
       "scheme": "dark",
       "width": 1440,
       "violations": []
+    }
+  ],
+  "modals": [
+    {
+      "label": "desktop",
+      "left": 330,
+      "right": 330,
+      "top": 60,
+      "bottom": 60,
+      "scrollable": true
+    },
+    {
+      "label": "android-390x844",
+      "left": 16,
+      "right": 16,
+      "top": 50.640625,
+      "bottom": 50.640625,
+      "scrollable": true
+    },
+    {
+      "label": "android-320x640",
+      "left": 16,
+      "right": 16,
+      "top": 38.40625,
+      "bottom": 38.40625,
+      "scrollable": true
+    },
+    {
+      "label": "android-844x390",
+      "left": 32,
+      "right": 32,
+      "top": 23.40625,
+      "bottom": 23.40625,
+      "scrollable": true
     }
   ],
   "errors": []

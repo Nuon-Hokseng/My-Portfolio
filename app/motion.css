@@ -1,0 +1,275 @@
+/* Finite entrance accents and small, deliberate interaction responses. */
+main {
+  /* Contain sideways entrances without creating a nested scroll container. */
+  overflow-x: clip;
+}
+.section-head h2 {
+  position: relative;
+}
+.section-head h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -12px;
+  width: 46px;
+  height: 2px;
+  background: var(--accent);
+  transform-origin: left;
+  transform: scaleX(0);
+  opacity: 0;
+  pointer-events: none;
+}
+.section-head[data-motion-state="running"] h2::after {
+  animation: caption-rule 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.section-head[data-motion-state="settled"] h2::after {
+  transform: scaleX(1);
+  opacity: 0.65;
+}
+.timeline li[data-motion-state="running"]::before {
+  animation: milestone-dot 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.timeline li[data-motion-state="running"]::after {
+  animation: timeline-draw 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: top;
+}
+.skill-card,
+.project-card,
+.work-photo,
+.private-work {
+  transition:
+    translate 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s,
+    box-shadow 0.3s;
+}
+.stats > div {
+  transition: translate 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.stats strong,
+.timeline .year {
+  transition: color 0.25s;
+}
+.skill-card .line-icon {
+  transition:
+    rotate 0.35s,
+    translate 0.35s;
+}
+.skill-card .tags li {
+  transition:
+    translate 0.25s,
+    color 0.25s,
+    border-color 0.25s;
+}
+.skill-card .tags li:nth-child(2) {
+  transition-delay: 20ms;
+}
+.skill-card .tags li:nth-child(3) {
+  transition-delay: 40ms;
+}
+.skill-card .tags li:nth-child(4) {
+  transition-delay: 60ms;
+}
+.skill-card .tags li:nth-child(5) {
+  transition-delay: 80ms;
+}
+.skill-card .tags li:nth-child(6) {
+  transition-delay: 100ms;
+}
+.photo-frame img,
+.project-screen img,
+.work-photo-image img {
+  transition: scale 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.photo-thumbnail {
+  transition:
+    translate 0.22s,
+    opacity 0.22s,
+    border-color 0.22s;
+}
+.text-button svg,
+.contact-cv svg,
+.light-button svg,
+.poster-work svg,
+.poster-links > a svg:last-child {
+  transition: translate 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.contact-socials a {
+  position: relative;
+}
+.contact-socials a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 6px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.28s;
+}
+.extra-options summary > span:last-child,
+.story-details summary > span:last-child {
+  transition: rotate 0.25s;
+}
+.extra-options details[open] > summary > span:last-child,
+.story-details[open] > summary > span:last-child {
+  rotate: 45deg;
+}
+.extra-options details[open] > section {
+  animation: panel-in 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.poster-links > a {
+  transition:
+    translate 0.25s,
+    background 0.25s,
+    border-color 0.25s;
+}
+.poster-button,
+.button,
+.poster-work {
+  transition:
+    background 0.2s,
+    color 0.2s,
+    translate 0.2s,
+    border-color 0.2s;
+}
+.poster-button:active,
+.button:active,
+.filter-bar button:active {
+  translate: 0 1px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .stats > div:hover {
+    translate: 0 -4px;
+  }
+  .stats > div:hover strong {
+    color: var(--accent);
+  }
+  .skill-card:hover,
+  .skill-card:focus-within {
+    translate: 0 -6px;
+    border-color: var(--accent);
+    box-shadow: 0 12px 28px #153a2409;
+  }
+  .skill-card:hover .line-icon {
+    rotate: -7deg;
+    translate: 0 -2px;
+  }
+  .skill-card:hover .tags li {
+    translate: 0 -2px;
+    border-color: var(--accent);
+  }
+  .experience-card .photo-frame:hover img,
+  .achievement-card .photo-frame:hover img,
+  .volunteer-layout .photo-frame:hover img {
+    scale: 1.035;
+  }
+  .photo-thumbnail:hover {
+    translate: 0 -2px;
+  }
+  .timeline li:hover .year {
+    color: var(--accent);
+  }
+  .timeline li:hover::before {
+    background: var(--accent);
+  }
+  .project-card:hover,
+  .project-card:focus-within {
+    translate: 0 -5px;
+    border-color: var(--accent);
+    box-shadow: 0 12px 28px #153a240a;
+  }
+  .project-card:hover .project-screen img {
+    scale: 1.035;
+  }
+  .project-card:hover .text-button svg {
+    translate: 3px -3px;
+  }
+  .work-photo:hover {
+    translate: 0 -3px;
+  }
+  .work-photo:hover .work-photo-image img {
+    scale: 1.04;
+  }
+  .private-work:hover {
+    border-color: var(--accent);
+  }
+  .poster-links > a:hover {
+    translate: 0 -2px;
+  }
+  .poster-links > a:hover svg:last-child,
+  .poster-work:hover svg,
+  .light-button:hover svg {
+    translate: 3px -3px;
+  }
+  .contact-socials a:hover::after {
+    transform: scaleX(1);
+  }
+  .contact-cv:hover svg {
+    translate: 0 3px;
+  }
+}
+@keyframes caption-rule {
+  from {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleX(1);
+    opacity: 0.65;
+  }
+}
+@keyframes milestone-dot {
+  from {
+    transform: scale(0.4);
+    opacity: 0.2;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes timeline-draw {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+@keyframes panel-in {
+  from {
+    opacity: 0.5;
+    translate: 0 8px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .section-head h2::after {
+    animation: none !important;
+    transform: scaleX(1);
+    opacity: 0.65;
+  }
+  .stats > div,
+  .skill-card,
+  .project-card,
+  .work-photo,
+  .poster-links > a {
+    translate: none !important;
+  }
+  .photo-frame img,
+  .project-screen img,
+  .work-photo-image img {
+    scale: 1 !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
