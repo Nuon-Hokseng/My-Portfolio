@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local browser verification images and diagnostic output
+/design/verification/*.png
+/design/verification/*.webm
+/lint-results.json
+/design/verification/lighthouse-*.json

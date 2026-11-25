@@ -4,9 +4,16 @@ import { useEffect, useState } from "react";
 
 // ↑ ↑ ↓ ↓ ← → ← → B A
 const SEQ = [
-  "arrowup", "arrowup", "arrowdown", "arrowdown",
-  "arrowleft", "arrowright", "arrowleft", "arrowright",
-  "b", "a",
+  "arrowup",
+  "arrowup",
+  "arrowdown",
+  "arrowdown",
+  "arrowleft",
+  "arrowright",
+  "arrowleft",
+  "arrowright",
+  "b",
+  "a",
 ];
 const EMOJIS = ["🎮", "🚀", "⭐", "💜", "🕹️", "✨", "🏆", "👾"];
 
@@ -35,12 +42,15 @@ export function KonamiEasterEgg() {
   if (!active) return null;
 
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 200 }}>
+    <div
+      className="fixed inset-0 pointer-events-none overflow-hidden"
+      style={{ zIndex: 200 }}
+    >
       {Array.from({ length: 44 }).map((_, i) => {
-        const left = Math.random() * 100;
-        const delay = Math.random() * 1.5;
-        const dur = 2.5 + Math.random() * 2;
-        const size = 20 + Math.random() * 28;
+        const left = (i * 37) % 100;
+        const delay = ((i * 17) % 15) / 10;
+        const dur = 2.5 + ((i * 11) % 20) / 10;
+        const size = 20 + ((i * 11) % 20) / 108;
         return (
           <span
             key={i}

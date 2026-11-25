@@ -1,7 +1,13 @@
 "use client";
 
 import { useScrollAnimation } from "hooks/useScrollAnimation";
-import { useEffect, useRef, useState, type ReactNode, type PointerEvent as ReactPointerEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
 
 /*
  * Tiny zero-dependency platformer with a scrolling camera and enemies.
@@ -46,7 +52,8 @@ function buildLevel(s: Spec): string[] {
     Array.from({ length: s.width }, () => " "),
   );
   for (const [a, b] of s.ground) for (let c = a; c <= b; c++) grid[17][c] = "X";
-  for (const [r, c, len] of s.platforms) for (let i = 0; i < len; i++) grid[r][c + i] = "=";
+  for (const [r, c, len] of s.platforms)
+    for (let i = 0; i < len; i++) grid[r][c + i] = "=";
   for (const [c, r] of s.coins) grid[r][c] = "o";
   for (const [c, r] of s.spikes) grid[r][c] = "^";
   for (const [c, r] of s.enemies) grid[r][c] = "E";
@@ -61,33 +68,113 @@ const SPECS: Spec[] = [
     width: 56,
     start: [1, 16],
     goal: [53, 16],
-    ground: [[0, 18], [22, 55]], // pit cols 19-21 (3 wide)
-    platforms: [[14, 8, 4], [14, 28, 4], [14, 44, 5]],
-    coins: [[4, 16], [9, 13], [10, 13], [15, 16], [29, 13], [30, 13], [34, 16], [40, 16], [45, 13], [46, 13]],
+    ground: [
+      [0, 18],
+      [22, 55],
+    ], // pit cols 19-21 (3 wide)
+    platforms: [
+      [14, 8, 4],
+      [14, 28, 4],
+      [14, 44, 5],
+    ],
+    coins: [
+      [4, 16],
+      [9, 13],
+      [10, 13],
+      [15, 16],
+      [29, 13],
+      [30, 13],
+      [34, 16],
+      [40, 16],
+      [45, 13],
+      [46, 13],
+    ],
     spikes: [[30, 16]],
-    enemies: [[12, 16], [37, 16]],
+    enemies: [
+      [12, 16],
+      [37, 16],
+    ],
   },
   // Level 2 — mind the gaps
   {
     width: 64,
     start: [1, 16],
     goal: [61, 16],
-    ground: [[0, 15], [19, 33], [37, 63]], // pits 16-18 and 34-36
-    platforms: [[14, 10, 4], [14, 24, 4], [14, 46, 5], [11, 40, 4]],
-    coins: [[5, 16], [11, 13], [12, 13], [25, 13], [41, 10], [42, 10], [47, 13], [48, 13], [54, 16], [58, 16]],
-    spikes: [[26, 16], [52, 16]],
-    enemies: [[13, 16], [28, 16], [44, 16]],
+    ground: [
+      [0, 15],
+      [19, 33],
+      [37, 63],
+    ], // pits 16-18 and 34-36
+    platforms: [
+      [14, 10, 4],
+      [14, 24, 4],
+      [14, 46, 5],
+      [11, 40, 4],
+    ],
+    coins: [
+      [5, 16],
+      [11, 13],
+      [12, 13],
+      [25, 13],
+      [41, 10],
+      [42, 10],
+      [47, 13],
+      [48, 13],
+      [54, 16],
+      [58, 16],
+    ],
+    spikes: [
+      [26, 16],
+      [52, 16],
+    ],
+    enemies: [
+      [13, 16],
+      [28, 16],
+      [44, 16],
+    ],
   },
   // Level 3 — spikes, pits & a mob
   {
     width: 72,
     start: [1, 16],
     goal: [69, 16],
-    ground: [[0, 11], [15, 27], [31, 45], [49, 71]], // pits 12-14, 28-30, 46-48
-    platforms: [[14, 6, 3], [14, 20, 3], [14, 36, 4], [11, 54, 4], [14, 58, 4]],
-    coins: [[7, 13], [21, 13], [37, 13], [38, 13], [55, 10], [56, 10], [59, 13], [60, 13], [33, 16], [64, 16]],
-    spikes: [[9, 16], [24, 16], [42, 16], [55, 16]],
-    enemies: [[17, 16], [34, 16], [40, 16], [62, 16]],
+    ground: [
+      [0, 11],
+      [15, 27],
+      [31, 45],
+      [49, 71],
+    ], // pits 12-14, 28-30, 46-48
+    platforms: [
+      [14, 6, 3],
+      [14, 20, 3],
+      [14, 36, 4],
+      [11, 54, 4],
+      [14, 58, 4],
+    ],
+    coins: [
+      [7, 13],
+      [21, 13],
+      [37, 13],
+      [38, 13],
+      [55, 10],
+      [56, 10],
+      [59, 13],
+      [60, 13],
+      [33, 16],
+      [64, 16],
+    ],
+    spikes: [
+      [9, 16],
+      [24, 16],
+      [42, 16],
+      [55, 16],
+    ],
+    enemies: [
+      [17, 16],
+      [34, 16],
+      [40, 16],
+      [62, 16],
+    ],
   },
 ];
 
@@ -95,7 +182,15 @@ const LEVELS = SPECS.map(buildLevel);
 
 type Box = { x: number; y: number; vx: number; vy: number; onGround: boolean };
 type Enemy = Box & { dir: number; alive: boolean };
-type Particle = { x: number; y: number; vy: number; life: number; max: number; text: string; color: string };
+type Particle = {
+  x: number;
+  y: number;
+  vy: number;
+  life: number;
+  max: number;
+  text: string;
+  color: string;
+};
 
 function isSolid(map: string[], col: number, row: number) {
   if (col < 0 || col >= map[0].length) return true; // level edges are walls
@@ -105,11 +200,20 @@ function isSolid(map: string[], col: number, row: number) {
 }
 
 function countCoins(map: string[]) {
-  return map.reduce((n, row) => n + [...row].filter((c) => c === "o").length, 0);
+  return map.reduce(
+    (n, row) => n + [...row].filter((c) => c === "o").length,
+    0,
+  );
 }
 
 // per-axis AABB resolution against solid tiles
-function resolve(map: string[], b: Box, horizontal: boolean, w: number, h: number) {
+function resolve(
+  map: string[],
+  b: Box,
+  horizontal: boolean,
+  w: number,
+  h: number,
+) {
   const c0 = Math.floor(b.x / TILE);
   const c1 = Math.floor((b.x + w - 1) / TILE);
   const r0 = Math.floor(b.y / TILE);
@@ -163,11 +267,34 @@ export default function GameSection() {
   const [coins, setCoins] = useState(0);
   const [deaths, setDeaths] = useState(0);
   const [sound, setSound] = useState(false);
+  const [visible, setVisible] = useState(true);
+  const [documentVisible, setDocumentVisible] = useState(true);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const observer = new IntersectionObserver(([entry]) =>
+      setVisible(entry.isIntersecting),
+    );
+    if (canvas) observer.observe(canvas);
+    const syncVisibility = () => setDocumentVisible(!document.hidden);
+    document.addEventListener("visibilitychange", syncVisibility);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", syncVisibility);
+    };
+  }, []);
 
   const keys = useRef({ left: false, right: false, jump: false });
   const statusRef = useRef(status);
   const levelRef = useRef(level);
-  const player = useRef({ x: 0, y: 0, vx: 0, vy: 0, onGround: false, jumpLatch: false, face: 1 });
+  const player = useRef({
+    x: 0,
+    y: 0,
+    vx: 0,
+    vy: 0,
+    onGround: false,
+    jumpLatch: false,
+    face: 1,
+  });
   const enemies = useRef<Enemy[]>([]);
   const collected = useRef<Set<string>>(new Set());
   const mapRef = useRef<string[]>(LEVELS[0]);
@@ -175,9 +302,17 @@ export default function GameSection() {
   const soundRef = useRef(false);
   const audioRef = useRef<AudioContext | null>(null);
 
-  statusRef.current = status;
-  levelRef.current = level;
-  soundRef.current = sound;
+  useEffect(() => {
+    statusRef.current = status;
+    levelRef.current = level;
+    soundRef.current = sound;
+  }, [status, level, sound]);
+  useEffect(
+    () => () => {
+      void audioRef.current?.close();
+    },
+    [],
+  );
 
   // short WebAudio blip (muted unless the player turns sound on)
   const blip = (freq: number, dur = 0.08, type: OscillatorType = "square") => {
@@ -267,7 +402,7 @@ export default function GameSection() {
   }, []);
 
   useEffect(() => {
-    if (status !== "playing") return;
+    if (status !== "playing" || !visible || !documentVisible) return;
     const ctx = canvasRef.current?.getContext("2d");
     if (!ctx) return;
     let raf = 0;
@@ -339,7 +474,12 @@ export default function GameSection() {
         resolve(map, e, false, EW, EH);
 
         // collision with player
-        if (p.x < e.x + EW && p.x + PW > e.x && p.y < e.y + EH && p.y + PH > e.y) {
+        if (
+          p.x < e.x + EW &&
+          p.x + PW > e.x &&
+          p.y < e.y + EH &&
+          p.y + PH > e.y
+        ) {
           if (p.vy > 0 && p.y + PH - e.y < 18) {
             e.alive = false; // stomp
             p.vy = -7;
@@ -400,7 +540,7 @@ export default function GameSection() {
 
     raf = requestAnimationFrame(step);
     return () => cancelAnimationFrame(raf);
-  }, [status]);
+  }, [status, visible, documentVisible]);
 
   return (
     <section
@@ -426,7 +566,12 @@ export default function GameSection() {
           className={`relative mx-auto rounded-2xl border border-muted overflow-hidden shadow-xl bg-[#1b1830] transform transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
           style={{ transitionDelay: "150ms", aspectRatio: `${W} / ${H}` }}
         >
-          <canvas ref={canvasRef} width={W} height={H} className="block w-full h-full" />
+          <canvas
+            ref={canvasRef}
+            width={W}
+            height={H}
+            className="block w-full h-full"
+          />
 
           {status === "playing" && (
             <div className="absolute top-3 left-3 right-3 flex items-center justify-between text-sm font-semibold text-white pointer-events-none">
@@ -434,7 +579,7 @@ export default function GameSection() {
                 Level {level + 1} / {LEVELS.length}
               </span>
               <span className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-sm">
-                🪙 {coins} / {countCoins(mapRef.current)}
+                🪙 {coins} / {countCoins(LEVELS[level])}
               </span>
               <span className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-sm">
                 💀 {deaths}
@@ -456,7 +601,9 @@ export default function GameSection() {
             // the frame is only ~180px tall on phones, so extras hide below sm
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 sm:gap-5 bg-black/55 backdrop-blur-sm text-center px-6">
               <div className="hidden sm:block text-6xl">🎮</div>
-              <h3 className="text-lg sm:text-2xl font-bold text-white">Ready, Player One?</h3>
+              <h3 className="text-lg sm:text-2xl font-bold text-white">
+                Ready, Player One?
+              </h3>
               <p className="hidden sm:block text-white/70 max-w-md">
                 3 scrolling levels of jump-and-run. Stomp the enemies and try to
                 grab every coin.
@@ -473,10 +620,12 @@ export default function GameSection() {
           {status === "won" && (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 sm:gap-4 bg-black/65 backdrop-blur-sm text-center px-6">
               <div className="hidden sm:block text-6xl">🏆</div>
-              <h3 className="text-xl sm:text-3xl font-bold text-white">You beat all 3 levels!</h3>
+              <h3 className="text-xl sm:text-3xl font-bold text-white">
+                You beat all 3 levels!
+              </h3>
               <p className="text-sm sm:text-base text-white/80">
-                {coins} coins collected · {deaths} death{deaths === 1 ? "" : "s"}.
-                Legend. 🫡
+                {coins} coins collected · {deaths} death
+                {deaths === 1 ? "" : "s"}. Legend. 🫡
               </p>
               <div className="flex flex-wrap justify-center gap-2 sm:gap-3 sm:pt-2">
                 <button
@@ -489,7 +638,7 @@ export default function GameSection() {
                   href="#contact"
                   className="px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-base rounded-xl border border-white/40 text-white font-semibold hover:bg-white/10 transition-colors"
                 >
-                  Let's connect →
+                  Let&apos;s connect →
                 </a>
               </div>
             </div>
@@ -498,34 +647,58 @@ export default function GameSection() {
 
         {/* PlayStation-style gamepad (phones / tablets) */}
         {status === "playing" && (
-          <div className="lg:hidden flex items-center justify-between gap-3 rounded-3xl border border-muted bg-card/70 backdrop-blur-sm p-4 select-none touch-none">
+          <div className="game-controls lg:hidden flex items-center justify-between gap-3 rounded-3xl border border-muted bg-card/70 p-4 select-none touch-none">
             <div className="relative w-36 h-36 shrink-0">
               <div className="absolute left-12 top-12 w-12 h-12 bg-muted/60 rounded" />
-              <PadButton className="left-12 top-0 w-12 h-12 rounded-xl bg-background border border-muted text-foreground text-lg" onPress={(v) => (keys.current.jump = v)}>
+              <PadButton
+                className="left-12 top-0 w-12 h-12 rounded-xl bg-background border border-muted text-foreground text-lg"
+                onPress={(v) => (keys.current.jump = v)}
+              >
                 ▲
               </PadButton>
-              <PadButton className="left-0 top-12 w-12 h-12 rounded-xl bg-background border border-muted text-foreground text-lg" onPress={(v) => (keys.current.left = v)}>
+              <PadButton
+                className="left-0 top-12 w-12 h-12 rounded-xl bg-background border border-muted text-foreground text-lg"
+                onPress={(v) => (keys.current.left = v)}
+              >
                 ◀
               </PadButton>
-              <PadButton className="left-24 top-12 w-12 h-12 rounded-xl bg-background border border-muted text-foreground text-lg" onPress={(v) => (keys.current.right = v)}>
+              <PadButton
+                className="left-24 top-12 w-12 h-12 rounded-xl bg-background border border-muted text-foreground text-lg"
+                onPress={(v) => (keys.current.right = v)}
+              >
                 ▶
               </PadButton>
-              <PadButton className="left-12 top-24 w-12 h-12 rounded-xl bg-background border border-muted text-muted-foreground text-lg" onPress={() => {}}>
+              <PadButton
+                className="left-12 top-24 w-12 h-12 rounded-xl bg-background border border-muted text-muted-foreground text-lg"
+                onPress={() => {}}
+              >
                 ▼
               </PadButton>
             </div>
 
             <div className="relative w-36 h-36 shrink-0">
-              <PadButton className="left-12 top-0 w-12 h-12 rounded-full bg-background border-2 border-emerald-400 text-emerald-400 text-xl" onPress={(v) => (keys.current.jump = v)}>
+              <PadButton
+                className="left-12 top-0 w-12 h-12 rounded-full bg-background border-2 border-emerald-400 text-emerald-400 text-xl"
+                onPress={(v) => (keys.current.jump = v)}
+              >
                 △
               </PadButton>
-              <PadButton className="left-0 top-12 w-12 h-12 rounded-full bg-background border-2 border-pink-400 text-pink-400 text-xl" onPress={(v) => (keys.current.jump = v)}>
+              <PadButton
+                className="left-0 top-12 w-12 h-12 rounded-full bg-background border-2 border-pink-400 text-pink-400 text-xl"
+                onPress={(v) => (keys.current.jump = v)}
+              >
                 □
               </PadButton>
-              <PadButton className="left-24 top-12 w-12 h-12 rounded-full bg-background border-2 border-red-400 text-red-400 text-xl" onPress={(v) => (keys.current.jump = v)}>
+              <PadButton
+                className="left-24 top-12 w-12 h-12 rounded-full bg-background border-2 border-red-400 text-red-400 text-xl"
+                onPress={(v) => (keys.current.jump = v)}
+              >
                 ○
               </PadButton>
-              <PadButton className="left-12 top-24 w-12 h-12 rounded-full bg-sky-500 border-2 border-sky-400 text-white text-xl font-bold shadow-lg shadow-sky-500/30" onPress={(v) => (keys.current.jump = v)}>
+              <PadButton
+                className="left-12 top-24 w-12 h-12 rounded-full bg-sky-500 border-2 border-sky-400 text-white text-xl font-bold shadow-lg shadow-sky-500/30"
+                onPress={(v) => (keys.current.jump = v)}
+              >
                 ✕
               </PadButton>
             </div>
@@ -639,7 +812,12 @@ function draw(
   ctx.textAlign = "left";
 }
 
-function drawEnemy(ctx: CanvasRenderingContext2D, x: number, y: number, dir: number) {
+function drawEnemy(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  dir: number,
+) {
   // little angry Goomba-ish blob
   ctx.fillStyle = "#7a4a1e";
   ctx.beginPath();
@@ -668,7 +846,13 @@ function drawEnemy(ctx: CanvasRenderingContext2D, x: number, y: number, dir: num
 }
 
 // Mario-style sprite drawn with primitives, mirrored by facing direction.
-function drawMario(ctx: CanvasRenderingContext2D, px: number, py: number, face: number, vx: number) {
+function drawMario(
+  ctx: CanvasRenderingContext2D,
+  px: number,
+  py: number,
+  face: number,
+  vx: number,
+) {
   const RED = "#e52521";
   const SKIN = "#ffb27a";
   const HAIR = "#5a3210";

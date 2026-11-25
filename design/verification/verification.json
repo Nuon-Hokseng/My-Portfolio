@@ -1,0 +1,98 @@
+{
+  "url": "http://127.0.0.1:3000",
+  "viewports": [
+    {
+      "scheme": "light",
+      "width": 320,
+      "noOverflow": true,
+      "allImagesLoaded": true
+    },
+    {
+      "scheme": "light",
+      "width": 390,
+      "noOverflow": true,
+      "allImagesLoaded": true
+    },
+    {
+      "scheme": "light",
+      "width": 768,
+      "noOverflow": true,
+      "allImagesLoaded": true
+    },
+    {
+      "scheme": "light",
+      "width": 1024,
+      "noOverflow": true,
+      "allImagesLoaded": true
+    },
+    {
+      "scheme": "light",
+      "width": 1440,
+      "noOverflow": true,
+      "allImagesLoaded": true
+    },
+    {
+      "scheme": "dark",
+      "width": 320,
+      "noOverflow": true,
+      "allImagesLoaded": true
+    },
+    {
+      "scheme": "dark",
+      "width": 390,
+      "noOverflow": true,
+      "allImagesLoaded": true
+    },
+    {
+      "scheme": "dark",
+      "width": 768,
+      "noOverflow": true,
+      "allImagesLoaded": true
+    },
+    {
+      "scheme": "dark",
+      "width": 1024,
+      "noOverflow": true,
+      "allImagesLoaded": true
+    },
+    {
+      "scheme": "dark",
+      "width": 1440,
+      "noOverflow": true,
+      "allImagesLoaded": true
+    }
+  ],
+  "checks": [
+    "10 viewport/theme combinations: name, experience, new volunteer trip, lazy-loaded images, no horizontal overflow",
+    "Cursor color spotlight tracks position, fades in, and returns to grayscale on leave",
+    "Actual CV, project modal/Escape/focus restoration, every filter, three volunteer experiences and photo switching",
+    "Quiz works; game loads only on demand, starts, and unmounts when closed",
+    "Theme persists, mobile navigation works, reduced motion disables spatial transitions and smooth scrolling",
+    "Canonical, metadata, connected ProfilePage/Person schema, sitemap, robots, OG image and both theme icons",
+    "Touch game controls fit at 320px; closing releases the canvas",
+    "Touch devices show color without hover; no-JS visit retains readable content, working anchors, CV and mobile navigation"
+  ],
+  "accessibility": [
+    {
+      "scheme": "light",
+      "width": 390,
+      "violations": []
+    },
+    {
+      "scheme": "light",
+      "width": 1440,
+      "violations": []
+    },
+    {
+      "scheme": "dark",
+      "width": 390,
+      "violations": []
+    },
+    {
+      "scheme": "dark",
+      "width": 1440,
+      "violations": []
+    }
+  ],
+  "errors": []
+}

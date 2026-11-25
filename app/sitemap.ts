@@ -3,7 +3,16 @@ import { siteUrl } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
-    { url: `${siteUrl}/`, lastModified: new Date(), changeFrequency: "monthly", priority: 1 },
-    { url: `${siteUrl}/Nuon_HokSeng_CV.pdf`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.6 },
+    {
+      url: `${siteUrl}/`,
+      lastModified: "2026-11-25",
+      changeFrequency: "monthly",
+      priority: 1,
+    },
+    {
+      url: `${siteUrl}/Nuon_Hokseng_CV.pdf`,
+      changeFrequency: "yearly",
+      priority: 0.6,
+    },
   ];
 }

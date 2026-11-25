@@ -1,36 +1,56 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-
+"use client";
+import { useSyncExternalStore } from "react";
+type Theme = "light" | "dark";
+function readTheme(): Theme {
+  return document.documentElement.classList.contains("dark") ? "dark" : "light";
+}
+function applyTheme(theme: Theme) {
+  document.documentElement.classList.toggle("dark", theme === "dark");
+}
+function subscribe(notify: () => void) {
+  const observer = new MutationObserver(notify);
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["class"],
+  });
+  const preference = matchMedia("(prefers-color-scheme: dark)");
+  const systemChange = () => {
+    try {
+      if (localStorage.getItem("theme")) return;
+    } catch {}
+    applyTheme(preference.matches ? "dark" : "light");
+  };
+  const storageChange = (event: StorageEvent) => {
+    if (event.key === "theme")
+      applyTheme(
+        event.newValue === "dark" || (!event.newValue && preference.matches)
+          ? "dark"
+          : "light",
+      );
+  };
+  preference.addEventListener("change", systemChange);
+  window.addEventListener("storage", storageChange);
+  return () => {
+    observer.disconnect();
+    preference.removeEventListener("change", systemChange);
+    window.removeEventListener("storage", storageChange);
+  };
+}
+const serverSnapshot = () => "server" as const;
 export function useTheme() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    // Check if theme is stored in localStorage
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
-    setTheme(initialTheme);
-    updateTheme(initialTheme);
-  }, []);
-
-  const updateTheme = (newTheme: 'light' | 'dark') => {
-    const html = document.documentElement;
-    if (newTheme === 'dark') {
-      html.classList.add('dark');
-    } else {
-      html.classList.remove('dark');
-    }
-    localStorage.setItem('theme', newTheme);
+  const snapshot = useSyncExternalStore(subscribe, readTheme, serverSnapshot);
+  const theme: Theme = snapshot === "server" ? "light" : snapshot;
+  return {
+    theme,
+    mounted: snapshot !== "server",
+    toggleTheme: () => {
+      const next = readTheme() === "dark" ? "light" : "dark";
+      applyTheme(next);
+      try {
+        localStorage.setItem("theme", next);
+      } catch {
+        /* Theme still works when storage is unavailable. */
+      }
+    },
   };
-
-  const toggleTheme = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
-    updateTheme(newTheme);
-  };
-
-  return { theme, toggleTheme, mounted };
 }

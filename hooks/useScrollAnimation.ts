@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 interface UseScrollAnimationOptions {
   threshold?: number;
@@ -13,6 +13,7 @@ export function useScrollAnimation(options: UseScrollAnimationOptions = {}) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    const target = ref.current;
     // `threshold` is measured against the viewport, not the element: reveal once
     // the element's top has come `threshold` of the screen height into view.
     // A ratio of the element itself can never be reached by sections taller
@@ -28,17 +29,18 @@ export function useScrollAnimation(options: UseScrollAnimationOptions = {}) {
           setIsVisible(false);
         }
       },
-      { threshold: 0, rootMargin: `0px 0px -${Math.round(threshold * 100)}% 0px` }
+      {
+        threshold: 0,
+        rootMargin: `0px 0px -${Math.round(threshold * window.innerHeight)}px 0px`,
+      },
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
+    if (target) {
+      observer.observe(target);
     }
 
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
-      }
+      observer.disconnect();
     };
   }, [threshold, once]);
 

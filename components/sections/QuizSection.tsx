@@ -19,7 +19,12 @@ const questions: Question[] = [
   },
   {
     q: "What's my go-to tech stack?",
-    options: ["PHP + jQuery", "Next.js + TypeScript", "WordPress only", "Pure HTML"],
+    options: [
+      "PHP + jQuery",
+      "Next.js + TypeScript",
+      "WordPress only",
+      "Pure HTML",
+    ],
     answer: 1,
     fact: "Next.js + TypeScript is home base — I love the modern JS/TS ecosystem.",
   },
@@ -60,10 +65,25 @@ const questions: Question[] = [
 
 function rank(score: number, total: number) {
   const pct = score / total;
-  if (pct === 1) return { title: "Soulmate-level 🧠💯", msg: "You nailed every single one. Are you sure we haven't met?" };
-  if (pct >= 0.6) return { title: "We'd get along great 🤝", msg: "You really get me. Let's grab a coffee and talk code." };
-  if (pct >= 0.3) return { title: "Getting to know me 🙂", msg: "Not bad! Scroll around and you'll learn the rest." };
-  return { title: "Total stranger 👀", msg: "Ha! Give it another shot — I'm not that mysterious." };
+  if (pct === 1)
+    return {
+      title: "Soulmate-level 🧠💯",
+      msg: "You nailed every single one. Are you sure we haven't met?",
+    };
+  if (pct >= 0.6)
+    return {
+      title: "We'd get along great 🤝",
+      msg: "You really get me. Let's grab a coffee and talk code.",
+    };
+  if (pct >= 0.3)
+    return {
+      title: "Getting to know me 🙂",
+      msg: "Not bad! Scroll around and you'll learn the rest.",
+    };
+  return {
+    title: "Total stranger 👀",
+    msg: "Ha! Give it another shot — I'm not that mysterious.",
+  };
 }
 
 export default function QuizSection() {
@@ -112,7 +132,7 @@ export default function QuizSection() {
             How Well Do You <span className="text-accent">Know Me?</span>
           </h2>
           <p className="text-lg text-muted-foreground">
-            A quick 5-question game — let's see how much you can guess 👇
+            Five quick questions about me.
           </p>
         </div>
 
@@ -134,11 +154,15 @@ export default function QuizSection() {
               <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
                 <div
                   className="h-full bg-accent transition-all duration-500"
-                  style={{ width: `${((current + (answered ? 1 : 0)) / questions.length) * 100}%` }}
+                  style={{
+                    width: `${((current + (answered ? 1 : 0)) / questions.length) * 100}%`,
+                  }}
                 />
               </div>
 
-              <h3 className="text-xl font-bold text-foreground">{question.q}</h3>
+              <h3 className="text-xl font-bold text-foreground">
+                {question.q}
+              </h3>
 
               <div className="grid gap-3">
                 {question.options.map((opt, i) => {
@@ -147,9 +171,11 @@ export default function QuizSection() {
                   let style =
                     "border-muted bg-background hover:border-accent hover:bg-accent/5";
                   if (answered && isCorrect)
-                    style = "border-green-500 bg-green-500/10 text-green-600 dark:text-green-400";
+                    style =
+                      "border-green-500 bg-green-500/10 text-green-600 dark:text-green-400";
                   else if (answered && isPicked)
-                    style = "border-red-500 bg-red-500/10 text-red-600 dark:text-red-400";
+                    style =
+                      "border-red-500 bg-red-500/10 text-red-600 dark:text-red-400";
                   else if (answered) style = "border-muted opacity-60";
                   return (
                     <button
@@ -175,21 +201,27 @@ export default function QuizSection() {
                     onClick={next}
                     className="w-full px-6 py-3 rounded-xl bg-accent text-accent-foreground font-semibold hover:opacity-90 transition-opacity"
                   >
-                    {current + 1 < questions.length ? "Next question →" : "See my result 🎉"}
+                    {current + 1 < questions.length
+                      ? "Next question →"
+                      : "See my result 🎉"}
                   </button>
                 </div>
               )}
             </div>
           ) : (
             <div className="text-center space-y-5 animate-fade-in">
-              <div className="text-6xl">{score === questions.length ? "🏆" : "🎉"}</div>
+              <div className="text-6xl">
+                {score === questions.length ? "🏆" : "🎉"}
+              </div>
               <div className="text-5xl font-bold text-accent">
                 {score} / {questions.length}
               </div>
               <h3 className="text-2xl font-bold text-foreground">
                 {rank(score, questions.length).title}
               </h3>
-              <p className="text-muted-foreground">{rank(score, questions.length).msg}</p>
+              <p className="text-muted-foreground">
+                {rank(score, questions.length).msg}
+              </p>
               <div className="flex flex-wrap justify-center gap-3 pt-2">
                 <button
                   onClick={restart}
@@ -201,7 +233,7 @@ export default function QuizSection() {
                   href="#contact"
                   className="px-6 py-3 rounded-xl border border-muted-foreground/40 text-foreground font-semibold hover:border-accent hover:text-accent transition-colors"
                 >
-                  Now let's connect →
+                  Now let&apos;s connect →
                 </a>
               </div>
             </div>

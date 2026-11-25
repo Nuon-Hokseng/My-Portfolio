@@ -1,25 +1,24 @@
 import React from "react";
-import type { Metadata } from "next";
-import { Bricolage_Grotesque, Hanken_Grotesk, Noto_Sans_Khmer } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Hanken_Grotesk, Noto_Sans_Khmer } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
-import { name, khmerName, altNames, email, siteUrl, profileUrls } from "@/lib/site";
+import { name, altNames, email, siteUrl, profileUrls } from "@/lib/site";
 import "./globals.css";
+import "./refinements.css";
 
-// display: condensed via the wdth axis; body: Hanken; Khmer script: Noto
-const bricolage = Bricolage_Grotesque({
+// One Latin family plus a Khmer subset; no decorative font download.
+const hanken = Hanken_Grotesk({
   subsets: ["latin"],
-  axes: ["opsz", "wdth"],
-  variable: "--font-bricolage",
+  variable: "--font-hanken",
 });
-const hanken = Hanken_Grotesk({ subsets: ["latin"], variable: "--font-hanken" });
 const notoKhmer = Noto_Sans_Khmer({
   subsets: ["khmer"],
   weight: ["700", "800"],
   variable: "--font-noto-khmer",
 });
 
-const title = `${name} (${khmerName}) — Full-Stack Software Engineer`;
-const description = `${name} is a full-stack software engineer from Cambodia, studying at Kirirom Institute of Technology. Portfolio of Next.js, TypeScript and React projects — open to new opportunities.`;
+const title = `${name} | Full-Stack Web Developer in Cambodia`;
+const description = `${name}, a full-stack web developer in Cambodia with 2.5 years of hands-on experience. Explore Next.js, TypeScript, NestJS projects and community work.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -44,7 +43,12 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   openGraph: {
     title,
@@ -62,9 +66,34 @@ export const metadata: Metadata = {
     description,
   },
   icons: {
-    icon: [{ url: "/logo.png" }],
-    apple: [{ url: "/logo.png" }],
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      {
+        url: "/icons/icon-light.svg",
+        type: "image/svg+xml",
+        media: "(prefers-color-scheme: light)",
+      },
+      {
+        url: "/icons/icon-dark.svg",
+        type: "image/svg+xml",
+        media: "(prefers-color-scheme: dark)",
+      },
+    ],
+    apple: [
+      {
+        url: "/icons/apple-touch-icon.png",
+        sizes: "180x180",
+        type: "image/png",
+      },
+    ],
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#171c1a" },
+  ],
 };
 
 // Structured data so search engines know this site *is* the person, and
@@ -82,12 +111,26 @@ const jsonLd = {
       url: siteUrl,
       image: `${siteUrl}/hero.png`,
       email: `mailto:${email}`,
-      jobTitle: "Full-Stack Software Engineer",
+      jobTitle: "Full-Stack Web Developer",
       description,
       nationality: { "@type": "Country", name: "Cambodia" },
       address: { "@type": "PostalAddress", addressCountry: "KH" },
-      alumniOf: { "@type": "CollegeOrUniversity", name: "Kirirom Institute of Technology" },
-      knowsAbout: ["Software Engineering", "Next.js", "TypeScript", "React", "Node.js", "NestJS", "Supabase", "PostgreSQL", "Docker", "AWS"],
+      affiliation: {
+        "@type": "CollegeOrUniversity",
+        name: "Kirirom Institute of Technology",
+      },
+      knowsAbout: [
+        "Software Engineering",
+        "Next.js",
+        "TypeScript",
+        "React",
+        "Node.js",
+        "NestJS",
+        "Supabase",
+        "PostgreSQL",
+        "Docker",
+        "AWS",
+      ],
       sameAs: profileUrls,
     },
     {
@@ -106,6 +149,7 @@ const jsonLd = {
       name: title,
       isPartOf: { "@id": `${siteUrl}/#website` },
       mainEntity: { "@id": `${siteUrl}/#person` },
+      dateModified: "2026-11-25T00:00:00+07:00",
     },
   ],
 };
@@ -119,7 +163,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${bricolage.variable} ${hanken.variable} ${notoKhmer.variable}`}
+      className={`${hanken.variable} ${notoKhmer.variable}`}
     >
       <head>
         {/* Set theme before paint to avoid a flash of the wrong theme.
@@ -133,12 +177,17 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased">
+        <noscript>
+          <style>{`.menu,.filter-bar,.volunteer-tabs{display:none!important}@media(max-width:760px){.nav{height:auto;min-height:72px;flex-wrap:wrap;padding-block:15px}.nav-links{display:flex!important;position:static;order:3;width:100%;flex-direction:row;flex-wrap:wrap;padding:0;border:0;box-shadow:none;gap:12px}}`}</style>
+        </noscript>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+          }}
         />
         {children}
-        <Analytics />
+        {process.env.VERCEL === "1" && <Analytics />}
       </body>
     </html>
   );

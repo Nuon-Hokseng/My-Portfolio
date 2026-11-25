@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useTheme } from 'hooks/useTheme';
-import { Moon, Sun } from 'lucide-react';
+import { useTheme } from "hooks/useTheme";
+import { Moon, Sun } from "lucide-react";
 
 export function ThemeToggle() {
   const { theme, toggleTheme, mounted } = useTheme();
@@ -11,19 +11,15 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-card/80 backdrop-blur-md border border-muted hover:border-accent transition-all duration-300 hover:shadow-lg hover:shadow-accent/20 group"
-      aria-label="Toggle theme"
+      className="theme-toggle"
+      aria-label={
+        theme === "dark" ? "Switch to light theme" : "Switch to dark theme"
+      }
     >
-      {theme === 'dark' ? (
-        <Sun
-          size={20}
-          className="text-yellow-400 group-hover:rotate-90 transition-transform duration-300"
-        />
+      {theme === "dark" ? (
+        <Sun size={20} aria-hidden="true" />
       ) : (
-        <Moon
-          size={20}
-          className="text-blue-400 group-hover:rotate-90 transition-transform duration-300"
-        />
+        <Moon size={20} aria-hidden="true" />
       )}
     </button>
   );
