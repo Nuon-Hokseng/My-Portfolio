@@ -6,6 +6,7 @@ import { name, altNames, email, siteUrl, profileUrls } from "@/lib/site";
 import "./globals.css";
 import "./refinements.css";
 import "./motion.css";
+import "./hero-backdrop.css";
 
 // One Latin family plus a Khmer subset; no decorative font download.
 const hanken = Hanken_Grotesk({

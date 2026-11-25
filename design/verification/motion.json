@@ -82,7 +82,7 @@
       "effect": "stat",
       "durationMs": 1100,
       "delayMs": 0,
-      "frames": 170,
+      "frames": 176,
       "monotonicOpacity": true,
       "completed": true
     },
@@ -91,7 +91,7 @@
       "effect": "fan",
       "durationMs": 1100,
       "delayMs": 0,
-      "frames": 181,
+      "frames": 180,
       "monotonicOpacity": true,
       "completed": true
     },
@@ -100,7 +100,7 @@
       "effect": "left",
       "durationMs": 1100,
       "delayMs": 0,
-      "frames": 162,
+      "frames": 158,
       "monotonicOpacity": true,
       "completed": true
     },
@@ -118,7 +118,7 @@
       "effect": "timeline",
       "durationMs": 1100,
       "delayMs": 0,
-      "frames": 177,
+      "frames": 175,
       "monotonicOpacity": true,
       "completed": true
     },
@@ -127,7 +127,7 @@
       "effect": "photo",
       "durationMs": 1100,
       "delayMs": 0,
-      "frames": 181,
+      "frames": 176,
       "monotonicOpacity": true,
       "completed": true
     },
@@ -136,7 +136,7 @@
       "effect": "project",
       "durationMs": 1100,
       "delayMs": 0,
-      "frames": 147,
+      "frames": 137,
       "monotonicOpacity": true,
       "completed": true
     },
@@ -154,7 +154,7 @@
       "effect": "award",
       "durationMs": 1100,
       "delayMs": 0,
-      "frames": 181,
+      "frames": 180,
       "monotonicOpacity": true,
       "completed": true
     },
@@ -181,7 +181,7 @@
       "effect": "stat",
       "durationMs": 1100,
       "delayMs": 0,
-      "frames": 180,
+      "frames": 179,
       "monotonicOpacity": true,
       "completed": true
     },
@@ -190,7 +190,7 @@
       "effect": "fan",
       "durationMs": 1100,
       "delayMs": 0,
-      "frames": 180,
+      "frames": 179,
       "monotonicOpacity": true,
       "completed": true
     },
@@ -253,7 +253,7 @@
       "effect": "award",
       "durationMs": 1100,
       "delayMs": 0,
-      "frames": 180,
+      "frames": 178,
       "monotonicOpacity": true,
       "completed": true
     },
@@ -262,7 +262,7 @@
       "effect": "quiet",
       "durationMs": 1100,
       "delayMs": 0,
-      "frames": 180,
+      "frames": 176,
       "monotonicOpacity": true,
       "completed": true
     },

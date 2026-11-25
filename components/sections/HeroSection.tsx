@@ -6,12 +6,14 @@ import {
   Linkedin,
 } from "lucide-react";
 import { PortraitSpotlight } from "@/components/PortraitSpotlight";
+import { HeroBackdrop } from "@/components/HeroBackdrop";
 import { cvUrl, socials } from "@/lib/site";
 
 export default function HeroSection() {
   return (
     <section id="hero" className="poster-hero" aria-labelledby="poster-name">
       <div className="poster-stage">
+        <HeroBackdrop />
         <h1 id="poster-name" className="poster-name" aria-label="Nuon Hokseng">
           <span className="name-outline">Nuon</span>{" "}
           <span className="name-solid">Hokseng</span>

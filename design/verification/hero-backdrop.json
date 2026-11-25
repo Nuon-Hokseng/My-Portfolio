@@ -1,0 +1,75 @@
+{
+  "url": "http://127.0.0.1:3000",
+  "asset": {
+    "bytes": 136614,
+    "width": 960,
+    "height": 1198,
+    "alpha": true,
+    "sha256": "0fd425ecef2561465bb916aa4a3d875619f94f9a9b3db48c1cf0fae79e4b9b92"
+  },
+  "views": [
+    {
+      "scheme": "light",
+      "width": 320,
+      "moving": true,
+      "pauseResumeContinuous": true,
+      "offscreenPaused": true,
+      "reducedMotionStatic": true,
+      "noOverflow": true
+    },
+    {
+      "scheme": "light",
+      "width": 390,
+      "moving": true,
+      "pauseResumeContinuous": true,
+      "offscreenPaused": true,
+      "reducedMotionStatic": true,
+      "noOverflow": true
+    },
+    {
+      "scheme": "light",
+      "width": 1440,
+      "moving": true,
+      "pauseResumeContinuous": true,
+      "offscreenPaused": true,
+      "reducedMotionStatic": true,
+      "noOverflow": true
+    },
+    {
+      "scheme": "dark",
+      "width": 320,
+      "moving": true,
+      "pauseResumeContinuous": true,
+      "offscreenPaused": true,
+      "reducedMotionStatic": true,
+      "noOverflow": true
+    },
+    {
+      "scheme": "dark",
+      "width": 390,
+      "moving": true,
+      "pauseResumeContinuous": true,
+      "offscreenPaused": true,
+      "reducedMotionStatic": true,
+      "noOverflow": true
+    },
+    {
+      "scheme": "dark",
+      "width": 1440,
+      "moving": true,
+      "pauseResumeContinuous": true,
+      "offscreenPaused": true,
+      "reducedMotionStatic": true,
+      "noOverflow": true
+    }
+  ],
+  "checks": [
+    "Original supplied sculpture optimized to a transparent WebP, no visual regeneration",
+    "Actual slow transform motion in both themes at 320/390/1440px",
+    "Manual pause/resume keeps phase; offscreen hero pauses",
+    "Reduced motion at load/change keeps a static sculpture and hides the control",
+    "No-JavaScript fallback remains static and readable",
+    "Decorative layer never intercepts the portrait's input"
+  ],
+  "errors": []
+}
