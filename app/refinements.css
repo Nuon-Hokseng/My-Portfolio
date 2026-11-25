@@ -1,5 +1,6 @@
 /* Shared theme/interaction layer for the approved portfolio design. */
 :root {
+  color-scheme: light;
   --background: #fff;
   --foreground: var(--ink);
   --card: #fff;
@@ -129,6 +130,24 @@ body {
 }
 .poster-portrait {
   pointer-events: auto;
+  touch-action: pan-y pinch-zoom;
+}
+.menu {
+  color: var(--ink);
+  background: var(--background);
+}
+.menu:hover,
+.menu:focus-visible {
+  color: var(--ink);
+}
+.menu svg {
+  stroke: currentColor;
+}
+.nav-links {
+  color: var(--ink);
+}
+.nav-links a {
+  color: inherit;
 }
 .nav-links a[aria-current] {
   color: var(--accent);
@@ -480,6 +499,10 @@ body {
   }
 }
 @media (max-width: 760px) {
+  .nav-links {
+    background: var(--card);
+    border-color: var(--line);
+  }
   .poster-portrait {
     width: 100%;
     max-width: 360px;
@@ -556,16 +579,6 @@ body {
 @media (max-width: 360px) {
   .poster-name {
     font-size: 60px;
-  }
-}
-@media (hover: none), (pointer: coarse) {
-  .portrait-color {
-    opacity: 1;
-    mask-image: none;
-    -webkit-mask-image: none;
-  }
-  .poster-portrait {
-    cursor: default;
   }
 }
 @supports not (mask-image: radial-gradient(#000, transparent)) {

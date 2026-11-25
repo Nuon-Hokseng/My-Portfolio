@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { mkdir, writeFile } from "node:fs/promises";
-import { chromium } from "@playwright/test";
+import { chromium, devices } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 // Run against `npm run start` or a deployed URL: PORTFOLIO_URL=https://... npm run test:ui
@@ -91,6 +91,39 @@ try {
         allImagesLoaded: true,
       });
       if (width === 390 || width === 1440) {
+        if (width === 390) {
+          await page.getByRole("button", { name: "Open navigation" }).click();
+          const menuAudit = await new AxeBuilder({ page })
+            .include(".header")
+            .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+            .analyze();
+          report.accessibility.push({
+            scheme,
+            width,
+            state: "navigation-open",
+            violations: menuAudit.violations.map((v) => ({
+              id: v.id,
+              impact: v.impact,
+              nodes: v.nodes.map((n) => n.target),
+            })),
+          });
+          const palette = await page
+            .locator(".nav-links")
+            .evaluate((el) => ({
+              background: getComputedStyle(el).backgroundColor,
+              text: getComputedStyle(el).color,
+            }));
+          assert.notEqual(
+            palette.background,
+            palette.text,
+            "mobile menu must not blend into its background",
+          );
+          await page.screenshot({
+            path: `${out}/menu-${scheme}.png`,
+            clip: { x: 0, y: 0, width, height: 420 },
+          });
+          await page.getByRole("button", { name: "Close navigation" }).click();
+        }
         await page.screenshot({
           path: `${out}/${width === 390 ? "mobile" : "desktop"}-${scheme}.png`,
           fullPage: true,
@@ -290,9 +323,8 @@ try {
   await context.close();
 
   const touch = await browser.newContext({
+    ...devices["Pixel 7"],
     viewport: { width: 390, height: 844 },
-    hasTouch: true,
-    isMobile: true,
   });
   const mobile = await touch.newPage();
   await mobile.goto(url, { waitUntil: "networkidle" });
@@ -300,13 +332,85 @@ try {
     await mobile
       .locator(".portrait-color")
       .evaluate((el) => getComputedStyle(el).opacity),
-    "1",
+    "0",
   );
-  assert.equal(
+  assert.notEqual(
     await mobile
       .locator(".portrait-color")
       .evaluate((el) => getComputedStyle(el).maskImage),
     "none",
+  );
+  const mobilePortrait = mobile.locator(".poster-portrait");
+  const box = await mobilePortrait.boundingBox();
+  const x = Math.round(box.x + box.width * 0.45),
+    y = Math.round(box.y + box.height * 0.36);
+  const input = await touch.newCDPSession(mobile);
+  await input.send("Input.dispatchTouchEvent", {
+    type: "touchStart",
+    touchPoints: [{ x, y, id: 0, radiusX: 5, radiusY: 5, force: 1 }],
+  });
+  await mobile.waitForTimeout(450);
+  assert.equal(
+    await mobile
+      .locator(".portrait-color")
+      .evaluate((el) => getComputedStyle(el).opacity),
+    "1",
+  );
+  const startSpot = await mobilePortrait.evaluate((el) =>
+    parseFloat(el.style.getPropertyValue("--spot-x")),
+  );
+  await input.send("Input.dispatchTouchEvent", {
+    type: "touchMove",
+    touchPoints: [{ x: x + 40, y, id: 0, radiusX: 5, radiusY: 5, force: 1 }],
+  });
+  await mobile.waitForTimeout(80);
+  assert.ok(
+    (await mobilePortrait.evaluate((el) =>
+      parseFloat(el.style.getPropertyValue("--spot-x")),
+    )) >
+      startSpot + 20,
+    "spotlight must follow a real touch drag",
+  );
+  await mobilePortrait.screenshot({ path: `${out}/portrait-touch-color.png` });
+  await input.send("Input.dispatchTouchEvent", {
+    type: "touchEnd",
+    touchPoints: [],
+  });
+  await mobile.waitForTimeout(450);
+  assert.equal(
+    await mobile
+      .locator(".portrait-color")
+      .evaluate((el) => getComputedStyle(el).opacity),
+    "0",
+  );
+  assert.equal(await mobilePortrait.getAttribute("data-hover"), null);
+  // Vertical gestures should still scroll the page rather than trapping the finger.
+  await input.send("Input.dispatchTouchEvent", {
+    type: "touchStart",
+    touchPoints: [{ x, y, id: 0 }],
+  });
+  await input.send("Input.dispatchTouchEvent", {
+    type: "touchMove",
+    touchPoints: [{ x, y: y - 90, id: 0 }],
+  });
+  await input.send("Input.dispatchTouchEvent", {
+    type: "touchEnd",
+    touchPoints: [],
+  });
+  await mobile.waitForTimeout(450);
+  assert.ok(
+    await mobile.evaluate(() => scrollY > 0),
+    "vertical portrait swipe must preserve page scrolling",
+  );
+  assert.equal(
+    await mobile
+      .locator(".portrait-color")
+      .evaluate((el) => getComputedStyle(el).opacity),
+    "0",
+  );
+  await mobile.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
+  report.checks.push(
+    "Android portrait starts grayscale, follows real finger input, clears on lift/cancel, and preserves vertical scroll",
   );
   await mobile.setViewportSize({ width: 320, height: 844 });
   await mobile.locator("#extras summary").nth(1).click();
@@ -336,7 +440,7 @@ try {
   assert.ok(await staticPage.locator(".poster-button").isVisible());
   await noJs.close();
   report.checks.push(
-    "Touch devices show color without hover; no-JS visit retains readable content, working anchors, CV and mobile navigation",
+    "No-JS visit retains readable content, working anchors, CV and mobile navigation",
   );
   await wait(50);
   assert.equal(report.errors.length, 0, JSON.stringify(report.errors));

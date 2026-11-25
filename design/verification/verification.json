@@ -69,10 +69,17 @@
     "Quiz works; game loads only on demand, starts, and unmounts when closed",
     "Theme persists, mobile navigation works, reduced motion disables spatial transitions and smooth scrolling",
     "Canonical, metadata, connected ProfilePage/Person schema, sitemap, robots, OG image and both theme icons",
+    "Android portrait starts grayscale, follows real finger input, clears on lift/cancel, and preserves vertical scroll",
     "Touch game controls fit at 320px; closing releases the canvas",
-    "Touch devices show color without hover; no-JS visit retains readable content, working anchors, CV and mobile navigation"
+    "No-JS visit retains readable content, working anchors, CV and mobile navigation"
   ],
   "accessibility": [
+    {
+      "scheme": "light",
+      "width": 390,
+      "state": "navigation-open",
+      "violations": []
+    },
     {
       "scheme": "light",
       "width": 390,
@@ -81,6 +88,12 @@
     {
       "scheme": "light",
       "width": 1440,
+      "violations": []
+    },
+    {
+      "scheme": "dark",
+      "width": 390,
+      "state": "navigation-open",
       "violations": []
     },
     {

@@ -21,11 +21,20 @@ export function PortraitSpotlight() {
   );
   const move = (event: PointerEvent<HTMLDivElement>) => {
     if (
-      event.pointerType === "touch" ||
-      !matchMedia("(hover: hover) and (pointer: fine)").matches
+      !event.isPrimary ||
+      (event.pointerType === "touch" && event.buttons === 0)
     )
       return;
     const rect = event.currentTarget.getBoundingClientRect();
+    if (
+      event.clientX < rect.left ||
+      event.clientX > rect.right ||
+      event.clientY < rect.top ||
+      event.clientY > rect.bottom
+    ) {
+      clear();
+      return;
+    }
     position.current = {
       x: event.clientX - rect.left,
       y: event.clientY - rect.top,
@@ -45,9 +54,16 @@ export function PortraitSpotlight() {
     <div
       ref={ref}
       className="poster-portrait"
+      onPointerDown={move}
       onPointerMove={move}
+      onPointerUp={(event) => {
+        if (event.pointerType !== "mouse") clear();
+      }}
       onPointerLeave={clear}
       onPointerCancel={clear}
+      onLostPointerCapture={(event) => {
+        if (event.pointerType !== "mouse") clear();
+      }}
     >
       <Image
         src="/hero.png"

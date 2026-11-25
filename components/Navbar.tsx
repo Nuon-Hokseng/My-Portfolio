@@ -55,6 +55,7 @@ export function Navbar() {
           Let&apos;s talk <ArrowUpRight size={14} aria-hidden="true" />
         </a>
         <button
+          type="button"
           className="menu"
           aria-label={open ? "Close navigation" : "Open navigation"}
           aria-expanded={open}
