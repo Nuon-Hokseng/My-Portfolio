@@ -1,0 +1,137 @@
+/* Brief channel-tuning texture, never a continuous or full-frame strobe. */
+.portrait-signal {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  mask-image: radial-gradient(
+    circle 165px at var(--spot-x, 50%) var(--spot-y, 38%),
+    #000 20%,
+    transparent 78%
+  );
+}
+.portrait-signal::before,
+.portrait-signal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: var(--portrait-image) center / contain no-repeat;
+  pointer-events: none;
+}
+.portrait-signal::before {
+  filter: sepia(1) saturate(4) hue-rotate(125deg);
+}
+.portrait-signal::after {
+  filter: sepia(1) saturate(4) hue-rotate(295deg);
+}
+.portrait-scanlines {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0 3px,
+    #183b3440 3px 4px
+  );
+  mask: var(--portrait-image) center / contain no-repeat;
+  pointer-events: none;
+}
+.poster-portrait[data-glitch] .portrait-signal {
+  opacity: 1;
+}
+.poster-portrait[data-glitch] .portrait-signal::before {
+  animation: signal-cyan 720ms steps(1, end) both;
+}
+.poster-portrait[data-glitch] .portrait-signal::after {
+  animation: signal-rose 720ms steps(1, end) both;
+}
+.poster-portrait[data-glitch] .portrait-scanlines {
+  animation: signal-scan 720ms ease-out both;
+}
+.poster-portrait[data-glitch] .portrait-color {
+  animation: signal-tune 720ms ease-out both;
+}
+@keyframes signal-cyan {
+  0%,
+  100% {
+    opacity: 0;
+    transform: none;
+    clip-path: inset(35% 0 57%);
+  }
+  12% {
+    opacity: 0.36;
+    transform: translateX(-4px);
+    clip-path: inset(32% 0 60%);
+  }
+  42% {
+    opacity: 0.24;
+    transform: translateX(3px);
+    clip-path: inset(49% 0 43%);
+  }
+  72% {
+    opacity: 0.12;
+    transform: translateX(-1px);
+    clip-path: inset(39% 0 56%);
+  }
+}
+@keyframes signal-rose {
+  0%,
+  100% {
+    opacity: 0;
+    transform: none;
+    clip-path: inset(42% 0 51%);
+  }
+  12% {
+    opacity: 0.26;
+    transform: translateX(4px);
+    clip-path: inset(32% 0 60%);
+  }
+  42% {
+    opacity: 0.18;
+    transform: translateX(-3px);
+    clip-path: inset(49% 0 43%);
+  }
+  72% {
+    opacity: 0.08;
+    transform: translateX(1px);
+    clip-path: inset(39% 0 56%);
+  }
+}
+@keyframes signal-scan {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  25% {
+    opacity: 0.2;
+  }
+  75% {
+    opacity: 0.1;
+    transform: translateY(4px);
+  }
+}
+@keyframes signal-tune {
+  0% {
+    filter: grayscale(1);
+  }
+  35% {
+    filter: grayscale(0.35);
+  }
+  65% {
+    filter: grayscale(0.6);
+  }
+  100% {
+    filter: grayscale(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .portrait-signal {
+    display: none;
+  }
+  .portrait-color {
+    animation: none !important;
+    filter: none !important;
+  }
+}

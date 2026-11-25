@@ -1,0 +1,30 @@
+{
+  "url": "http://127.0.0.1:3000",
+  "samples": [
+    {
+      "device": "desktop",
+      "opacity": "0.36",
+      "transform": "matrix(1, 0, 0, 1, -4, 0)",
+      "clip": "inset(32% 0px 60%)",
+      "source": "url(\"http://127.0.0.1:3000/_next/image?url=%2Fhero.png&w=640&q=75\")",
+      "duration": "0.72s",
+      "pointerDoesNotRestart": true,
+      "settlesIn720ms": true,
+      "grayscaleOnRelease": true,
+      "reducedMotionCancelsAndSkips": true
+    },
+    {
+      "device": "android-emulated",
+      "opacity": "0.36",
+      "transform": "matrix(1, 0, 0, 1, -4, 0)",
+      "clip": "inset(32% 0px 60%)",
+      "source": "url(\"http://127.0.0.1:3000/_next/image?url=%2Fhero.png&w=1080&q=75\")",
+      "duration": "0.72s",
+      "pointerDoesNotRestart": true,
+      "settlesIn720ms": true,
+      "grayscaleOnRelease": true,
+      "reducedMotionCancelsAndSkips": true
+    }
+  ],
+  "errors": []
+}

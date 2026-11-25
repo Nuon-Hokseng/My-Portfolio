@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "test:ui": "node scripts/check-portfolio.mjs",
     "test:motion": "node scripts/check-motion.mjs",
-    "test:hero": "node scripts/check-hero-backdrop.mjs"
+    "test:hero": "node scripts/check-hero-backdrop.mjs",
+    "test:portrait": "node scripts/check-portrait-signal.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
