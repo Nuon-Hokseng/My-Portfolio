@@ -1,11 +1,17 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import { mkdir, writeFile } from "node:fs/promises";
 import { chromium } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 // Run against `npm run start` or a deployed URL: PORTFOLIO_URL=https://... npm run test:ui
 const url = process.env.PORTFOLIO_URL || "http://127.0.0.1:3000";
-const out = "design/verification";
+const out = process.env.PORTFOLIO_REPORT_DIR || "design/verification";
+const trackedPublicFiles = new Set(
+  execFileSync("git", ["ls-files", "public"], { encoding: "utf8" })
+    .trim()
+    .split(/\r?\n/),
+);
 await mkdir(out, { recursive: true });
 const browser = await chromium.launch({ channel: "chrome", headless: true });
 const report = {
@@ -147,9 +153,12 @@ try {
     "Cursor color spotlight tracks position, fades in, and returns to grayscale on leave",
   );
 
-  const cv = await page.request.get(
-    await page.locator(".poster-button").evaluate((el) => el.href),
+  const cvHref = await page.locator(".poster-button").evaluate((el) => el.href);
+  assert.ok(
+    trackedPublicFiles.has(`public${new URL(cvHref).pathname}`),
+    "CV URL must match Git filename casing, even on Windows",
   );
+  const cv = await page.request.get(cvHref);
   assert.ok(cv.ok() && (await cv.body()).subarray(0, 4).toString() === "%PDF");
   const openProject = page.getByRole("button", {
     name: "Premier Optic / Workspace: view project",
@@ -300,13 +309,21 @@ try {
     "none",
   );
   await mobile.setViewportSize({ width: 320, height: 844 });
-  await mobile.locator('#extras summary').nth(1).click();
-  await mobile.getByRole('button', { name: /Start Game/ }).click();
-  assert.equal(await mobile.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'mobile game controls overflow');
-  await mobile.locator('#extras summary').nth(1).click();
-  await mobile.locator('#game canvas').waitFor({ state: 'detached' });
-  assert.equal(await mobile.locator('#game canvas').count(), 0);
-  report.checks.push('Touch game controls fit at 320px; closing releases the canvas');
+  await mobile.locator("#extras summary").nth(1).click();
+  await mobile.getByRole("button", { name: /Start Game/ }).click();
+  assert.equal(
+    await mobile.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+    true,
+    "mobile game controls overflow",
+  );
+  await mobile.locator("#extras summary").nth(1).click();
+  await mobile.locator("#game canvas").waitFor({ state: "detached" });
+  assert.equal(await mobile.locator("#game canvas").count(), 0);
+  report.checks.push(
+    "Touch game controls fit at 320px; closing releases the canvas",
+  );
   await touch.close();
   const noJs = await browser.newContext({
     javaScriptEnabled: false,

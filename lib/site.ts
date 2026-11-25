@@ -13,7 +13,8 @@ export const altNames = [
 ];
 
 export const email = "sengnoname168@gmail.com";
-export const cvUrl = "/Nuon_Hokseng_CV.pdf";
+// Match Git's filename casing: Vercel's filesystem is case-sensitive.
+export const cvUrl = "/Nuon_HokSeng_CV.pdf";
 
 export const socials = [
   { label: "Email", href: `mailto:${email}` },

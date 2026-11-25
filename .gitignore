@@ -45,3 +45,4 @@ next-env.d.ts
 /design/verification/*.webm
 /lint-results.json
 /design/verification/lighthouse-*.json
+/design/verification/live/
